@@ -24,8 +24,10 @@ From the command line, execute the below to setup the project or by running 'npm
 ```
 
 $ npm install express --save
+$ npm install express-session --save
 $ npm install express-handlebars --save
 $ npm install mongoose --save
+$ npm install mongojs --save
 $ npm install body-parser --save
 $ npm install cheerio --save
 $ npm install request --save
