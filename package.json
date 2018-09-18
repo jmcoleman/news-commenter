@@ -1,0 +1,31 @@
+{
+  "name": "news-commenter",
+  "version": "1.0.0",
+  "description": "Web app that lets users view and leave comments on the latest news",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmcoleman/news-commenter.git"
+  },
+  "author": "Jenni Coleman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmcoleman/news-commenter/issues"
+  },
+  "homepage": "https://github.com/jmcoleman/news-commenter#readme",
+  "keywords": [],
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "moment": "^2.22.2",
+    "mongoose": "^5.2.15",
+    "path": "^0.12.7",
+    "request": "^2.88.0"
+  }
+}

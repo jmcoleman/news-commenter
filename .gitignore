@@ -1,0 +1,10 @@
+# Ignore the below files and folders
+
+# Ignore folders
+output/
+temp/
+sandbox/
+node_modules/
+
+# Ignore files
+*.env
