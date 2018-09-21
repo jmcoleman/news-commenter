@@ -7,12 +7,12 @@ var ArticleSchema = new Schema({
     type: String,
     trim: true,
     unique: true,
-    required: "Article name is Required"
+    required: "Article name is required"
   },
   summary: {
     type: String,
     trim: true,
-    required: "Summary is Required"
+    required: "Summary is required"
   },
   urlLink: {
     type: String,
@@ -27,7 +27,7 @@ var ArticleSchema = new Schema({
   },
   comment: [{
     type: Schema.Types.ObjectId,
-    ref: 'Comment'
+    ref: 'ArticleComment'
     }]
 
 });

@@ -1,11 +1,12 @@
 html {
-    position: relative;
+    /* position: relative; */
     min-height: 100%;
   }
   
   body {
     margin-bottom: 80px;
-    background-image: url("../images/paper.png");
+    /* background-image: url("../images/preview_newspaper.jpg"); */
+    background-image: url("../images/newspaper2.png");
   }
   
   .card a:not([href]):not([tabindex]).scrape-new {
@@ -32,6 +33,7 @@ html {
     padding: 0;
     font-family: "Cormorant SC";
     box-shadow: 10px 5px 20px 2px lightslategrey;
+    text-align: center;
   }
   
   .jumbotron .overlay {
@@ -47,14 +49,14 @@ html {
   
   .jumbotron .background-image {
     height: 100%;
-    background-image: url("../images/newspaper.jpg");
+    background-image: url("../images/preview_newspaper.jpg");
     background-size: cover;
   }
   
   .jumbotron .caption {
-    position: absolute;
+    /* position: absolute;
     top: 30%;
-    width: 100%;
+    width: 100%; */
     text-align: center;
   }
   
