@@ -110,9 +110,10 @@ module.exports = function(app) {
 
   // GET root route
   app.get("/", function(req, res) {
-    res.render("index", {
-      title: "Mongo Web Scraper"
-    });
+    // res.render("index", {
+    //   title: "Mongo Web Scraper"
+    // });
+    res.redirect("/api/articles");
   });
 
   // GET scrape route to retrieve articles
@@ -125,26 +126,17 @@ module.exports = function(app) {
     // scrapes and saves articles to MongoDB
     scrapeSite();
 
+    res.redirect("/api/articles");
   });
+  
+  // GET clear all articles route
+  app.get("/clear", function(req, res) {
+    console.log("route: in clear all articles");
+    // console.log(JSON.stringify(req.body));
 
-  // GET saved route to get all saved articles
-  // app.get("/saved", function(req, res) {
+    db.Article.deleteMany({}, function(err) {});
 
-  //   console.log("route: in saved articles");
-  //   console.log(JSON.stringify(req.body));
-
-  //   db.Article.find({})
-  //     .then(function(dbResult) {
-  //       console.log(dbResult);
-
-  //       res.send(dbResult);
-  //       // res.render("saved", {articles: articles})      //TODO
-  //     })
-  //     .catch(function(err) {
-  //       // If an error occurs, log the error message
-  //       console.log(err.message);
-  //     });
-
-  // });
+    res.redirect("/");
+  });
 
 };

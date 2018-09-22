@@ -24,12 +24,12 @@ module.exports = function(app) {
     //find all articles
     db.Article.find({})
       .then(function(dbResult) {
-        res.send(dbResult);
+        // res.send(dbResult);
         // send to handlebars
         var hbsObject = {
           articles: dbResult
         };
-        // res.render("articles", hbsObject);       //TODO
+        res.render("index", hbsObject);       
       })
       .catch(function(err) {
         // If an error occurs, log the error message

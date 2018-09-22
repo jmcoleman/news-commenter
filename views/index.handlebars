@@ -14,22 +14,23 @@
         <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-            </button>No articles yet. Give it a go -- <a href="/scraped" class="alert-link">scrape some articles!</a>
+            </button>No articles yet. <a href="/scrape" class="alert-link">Go ahead and scrape some!</a>
         </div>
     {{/if}} 
 
-    {{!-- {{#grouped_each 3 articles}} --}}
-        {{#if articles}} 
+    {{#if articles}} 
         <div class="row">
             {{#each articles}}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    Bring it in Mongo
                     <a target="_blank" href={{urlLink}}>
-                        {{!-- <img src="{{this.image}}"  --}}
-                        /></a>
-                    <div class="caption">
                         <h3>{{headline}}</h3>
+                        {{!-- <img src="{{this.image}}"  />--}}
+                    </a>
+                    <div class="caption">
+                        {{!-- <h3>{{headline}}</h3> --}}
+                        <h4>{{author}}</h4>
+                        <div>{{summary}}</div>
                         <form method="POST" action="/">
                             <input type="hidden" name="headline" value="{{headline}}">
                             <input type="hidden" name="urlLink" value="{{urlLink}}">
@@ -41,13 +42,12 @@
                 </div>
             </div>
             {{/each}}
-        {{/if}} 
         </div>
-    {{!-- {{/grouped_each}} --}}
+    {{/if}} 
 
-        <div class="article-container">
-            Hello world
-        </div>
+    <div class="article-container">
+
+    </div>
 
   </div>
 
