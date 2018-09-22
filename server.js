@@ -1,28 +1,22 @@
-const cheerio = require("cheerio");
-const request = require("request");
-const mongojs = require("mongojs");
 const mongoose = require("mongoose");
-
-const SMASHING_MAGAZINE_URL = "https://www.smashingmagazine.com";
 
 /////////////////////////////////////////////////////////
 // handle environment variables
 /////////////////////////////////////////////////////////
+
 // use dotenv to read .env vars into Node but silence the Heroku log error for production as no .env will exist
 require('dotenv').config( { silent: process.env.NODE_ENV === 'production' } );
 
 // process.env.NODE_ENV is set by heroku with a default value of production
 if (process.env.NODE_ENV === 'production') {
   console.log("in PROD");
-  // connect to the JawsDB on heroku
-//   connection = mysql.createConnection(process.env.JAWSDB_URL);
+  // connect to the MongoDB on heroku using MONGODB_URI below
 } else {
   console.log("in DEV");
   // use the connection info from the .env file otherwise
   require('dotenv').load();
 }
 // console.log("process env: " + JSON.stringify(process.env,null,'\t'));
-
 
 //////////////////////////
 // dependencies
@@ -65,18 +59,6 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true)
-
-////////////////////////////////////////
-// Database configuration -- mongojs
-////////////////////////////////////////
-var databaseUrl = "mongoHeadlines";
-var collections = ["scrapedArticles"];
-
-// Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
-db.on("error", function(error) {
-  console.log("Database Error:", error);
-});
 
 /////////////////
 // handlebars
