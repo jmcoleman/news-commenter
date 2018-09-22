@@ -15,7 +15,7 @@ require('dotenv').config( { silent: process.env.NODE_ENV === 'production' } );
 if (process.env.NODE_ENV === 'production') {
   console.log("in PROD");
   // connect to the JawsDB on heroku
-  connection = mysql.createConnection(process.env.JAWSDB_URL);
+//   connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
   console.log("in DEV");
   // use the connection info from the .env file otherwise
