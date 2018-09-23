@@ -4,11 +4,15 @@
     <h1 class="shadow">Articles</h1>
 
     {{#if articles.length}}
-        <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>You've found {{articles.length}} articles.
-        </div> 
+        
+            <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{#isTruthy isScraping}}You've found {{articles.length}} article(s).{{/isTruthy}}
+                {{#isFalsey isScraping}}You have {{articles.length}} saved article(s).{{/isFalsey}}
+            </div> 
+        
     {{else}}
         <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,7 +33,7 @@
                         <h4>{{author}}</h4>
                         <h6>{{readableDate date}}</h6>
                         <div>{{summary}}</div>
-                        <form id="form-save-article">
+                        <form id="form-save-article-{{@index}}" class="form-save-article">
                             <input type="hidden" name="headline" value="{{headline}}" class="form-control">
                             <input type="hidden" name="summary" value="{{summary}}" class="form-control">
                             <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
@@ -37,7 +41,7 @@
                             <input type="hidden" name="date" value="{{date}}" class="form-control">
                             <br>
                             {{#isTruthy ../isScraping}}
-                                <button class="btn btn-info" type="submit">Save</button>
+                                <button class="btn btn-info" type="submit" id={{@index}}>Save</button>
                             {{/isTruthy}}
                         </form>
                     </div>

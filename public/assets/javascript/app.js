@@ -1,18 +1,25 @@
 $(document).ready(function() {
-console.log("LOAD js");
+
     //////////////////////////////////
     // save the article to MongoDB
     //////////////////////////////////
-    $("#form-save-article").on("submit", function(event) {
+    // $("#form-save-article").on("submit", function(event) {
+    $(".form-save-article").on("submit", function(event) {
+
         // Make sure to preventDefault on a submit event.
         event.preventDefault();
-console.log("in the submit");
+
+        console.log(JSON.stringify(this));
+        // var id = $(document.activeElement).attr("data-id");
+        var id = document.activeElement.id;
+        console.log("Index is: " + id.toString());
+
         var newArticle = {
-            headline: $("#form-save-article [name=headline]").val().trim(),
-            summary: $("#form-save-article [name=summary]").val().trim(),
-            urlLink: $("#form-save-article [name=urlLink]").val().trim(),
-            author: $("#form-save-article [name=author]").val().trim(),
-            date: $("#form-save-article [name=date]").val().trim()
+            headline: $("#form-save-article-" + id + " [name=headline]").val().trim(),
+            summary: $("#form-save-article-" + id + " [name=summary]").val().trim(),
+            urlLink: $("#form-save-article-" + id + " [name=urlLink]").val().trim(),
+            author: $("#form-save-article-" + id + " [name=author]").val().trim(),
+            date: $("#form-save-article-" + id + " [name=date]").val().trim()
         };
 
         console.log("Ajax request: create article");

@@ -27,9 +27,7 @@ var path = require('path');
 var bodyParser = require("body-parser");
 var moment = require('moment');
 
-// var cookieParser = require('cookie-parser');
-
-var db = require("./models");
+// var db = require("./models");
 
 ///////////////////////
 // configure Express
@@ -83,18 +81,10 @@ var hbs = exphbs.create({
 
 // handlebar configuration
 app.set('views', path.join(__dirname, 'views'));
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
-// helper
-// handlebars.registerHelper('readableDate', function(date) {
-//   return '<span class="date">'
-//     + moment(date).format('YYYY-MM-DD')
-//     + '</span>';
-// });
-
-// handlebars helpers
+// more handlebars helpers
 require('handlebars-helpers')(['comparison']);
 
 /////////////////////
