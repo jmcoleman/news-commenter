@@ -25,8 +25,8 @@
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
+    "handlebars-helpers": "^0.10.0",
     "moment": "^2.22.2",
-    "mongojs": "^2.6.0",
     "mongoose": "^5.2.15",
     "path": "^0.12.7",
     "request": "^2.88.0"

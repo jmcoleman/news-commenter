@@ -7,6 +7,8 @@
 // Requiring our models
 var db = require("./../../../models");
 
+const SMASHING_MAGAZINE_URL = "https://www.smashingmagazine.com";
+
 /////////////////
 // Routes
 /////////////////
@@ -21,10 +23,13 @@ module.exports = function(app) {
     console.log("route: all articles");
     // console.log(JSON.stringify(req.body));
 
+    var saved = req.query.saved ? true : false;
+
     //find all articles
     db.Article.find({})
       .then(function(dbResult) {
         // res.send(dbResult);
+
         // send to handlebars
         var hbsObject = {
           articles: dbResult
@@ -48,15 +53,62 @@ module.exports = function(app) {
 
     db.Article.findById(req.params.id, function(err, article) {})
       .then(function(dbResult) {
-        res.send(dbResult);
+        // res.send(dbResult);
+
         // send to handlebars
         var hbsArticle = {
-          article: dbResult
+          articles: dbResult
         };
         // console.log(dbResult);
-        // res.render("articles", hbsArticle);        //TODO
+        res.render("index", hbsArticle); 
       });
   });
+
+  /////////////////////////////////////////////
+  // POST route for saving new article
+  /////////////////////////////////////////////
+  app.post("/api/articles", function(req, res) {
+
+    console.log("route: create article");
+    console.log(JSON.stringify(req.body));
+
+    // db.Articles.create(req.body).then(function(dbResult) {
+    //   console.log("Article created.");
+    //   res.json(dbResult);
+    // }).catch(function (err) {
+    //   // send to handlebars
+    //   var hbsObject = {
+    //     article: req.body
+    //   };
+    //   res.render("articles", hbsObject);
+    // });
+
+
+    // Save a new Example using the data object
+    db.Article.create({
+      headline: req.body.headline,
+      summary: req.body.summary.trim(),
+      urlLink: SMASHING_MAGAZINE_URL + req.body.urlLink,
+      author: req.body.author,
+      date: req.body.date
+    })
+    .then(function(savedData) {
+      // If saved successfully, print the new document to the console
+      // console.log(savedData);
+
+      // send to handlebars
+      var hbsObject = {
+        articles: savedData
+      };
+      res.render("index", hbsObject);
+    })
+    .catch(function(err) {
+      // If an error occurs, log the error message
+      console.log(err.message);
+    });
+
+  });
+
 
   /////////////////////////////////////////////
   // DELETE route for deleting a article
@@ -77,27 +129,6 @@ module.exports = function(app) {
 };
 
 //////////////
-
-  /////////////////////////////////////////////
-  // POST route for saving new article
-  /////////////////////////////////////////////
-  // app.post("/api/articles", function(req, res) {
-
-  //   console.log("route: create article");
-  //   console.log(JSON.stringify(req.body));
-
-  //   db.Articles.create(req.body).then(function(dbResult) {
-  //     console.log("Article created.");
-  //     res.json(dbResult);
-  //   }).catch(function (err) {
-  //     // send to handlebars
-  //     var hbsObject = {
-  //       article: req.body
-  //     };
-  //     res.render("articles", hbsObject);
-  //   });
-  // });
-
 
   // /////////////////////////////////////////////
   // // PUT route for updating

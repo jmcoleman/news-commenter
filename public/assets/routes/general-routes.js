@@ -15,7 +15,7 @@ module.exports = function(app) {
   //////////////////////
   // functions
   //////////////////////
-  const scrapeSite = function () {
+  const scrapeSite = function (callback) {
     // First, tell the console what server.js is doing
     console.log("\n***********************************\n" +
                 "Grabbing every article name and link\n" +
@@ -25,7 +25,11 @@ module.exports = function(app) {
     // Making a request for Smashing Magazines's web site for articles. The page's HTML is passed as the callback's third argument
     request("https://www.smashingmagazine.com/articles/", function(error, response, html) {
 
-    // Load the HTML into cheerio and save it to a variable
+      if (error) {
+        return console.error('scape from site failed: ', error);
+      }
+
+      // Load the HTML into cheerio and save it to a variable
       // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
       const $ = cheerio.load(html, { ignoreWhitespace: true });
 
@@ -77,21 +81,21 @@ module.exports = function(app) {
             ////////////////////////
 
             // Save a new Example using the data object
-            db.Article.create({
-              headline: headline,
-              summary: summary.trim(),
-              urlLink: SMASHING_MAGAZINE_URL + urlLink,
-              author: author,
-              date: date
-            })
-            .then(function(savedData) {
-              // If saved successfully, print the new document to the console
-              console.log(savedData);
-            })
-            .catch(function(err) {
-              // If an error occurs, log the error message
-              console.log(err.message);
-            });
+            // db.Article.create({
+            //   headline: headline,
+            //   summary: summary.trim(),
+            //   urlLink: SMASHING_MAGAZINE_URL + urlLink,
+            //   author: author,
+            //   date: date
+            // })
+            // .then(function(savedData) {
+            //   // If saved successfully, print the new document to the console
+            //   // console.log(savedData);
+            // })
+            // .catch(function(err) {
+            //   // If an error occurs, log the error message
+            //   console.log(err.message);
+            // });
 
           }
 
@@ -99,7 +103,7 @@ module.exports = function(app) {
 
       // Log the results once you've looped through each of the elements found with cheerio
       // console.log(results);
- 
+      callback(null, results);
     });
 
   };
@@ -110,23 +114,27 @@ module.exports = function(app) {
 
   // GET root route
   app.get("/", function(req, res) {
-    // res.render("index", {
-    //   title: "Mongo Web Scraper"
-    // });
-    res.redirect("/api/articles");
+    res.redirect("/api/articles?saved=true");
   });
 
   // GET scrape route to retrieve articles
   app.get("/scrape", function(req, res) {
-    var query = {};
-
     console.log("route: in scrape articles");
-    console.log(JSON.stringify(req.body));
+    // console.log(JSON.stringify(req.body));
 
-    // scrapes and saves articles to MongoDB
-    scrapeSite();
+    // scrapes and returns articles
+    scrapeSite(function(err,articleList) {
+      console.log("returned results in");
+      // console.log(JSON.stringify(articleList));
+  
+      // send to handlebars
+      var hbsObject = {
+        articles: articleList,
+        isScraping: true
+      };
+      res.render("index", hbsObject);
+    });
 
-    res.redirect("/api/articles");
   });
   
   // GET clear all articles route
@@ -136,7 +144,7 @@ module.exports = function(app) {
 
     db.Article.deleteMany({}, function(err) {});
 
-    res.redirect("/");
+    res.redirect("/api/articles");
   });
 
 };

@@ -25,6 +25,7 @@ var express = require("express");
 var session = require('express-session');
 var path = require('path');
 var bodyParser = require("body-parser");
+var moment = require('moment');
 
 // var cookieParser = require('cookie-parser');
 
@@ -65,10 +66,36 @@ mongoose.set('useCreateIndex', true)
 /////////////////
 var exphbs = require("express-handlebars");
 
+//Here you can pass helpers that you would normally define in registerHelpers
+//and you can also define stuff like `defaultLayout` and `partialsDir`
+var hbs = exphbs.create({
+  helpers: {
+      sayHello: function () { alert("Hello World") },
+      getStringifiedJson: function (value) {
+          return JSON.stringify(value);
+      },
+      readableDate: function(date) {
+        return moment(date).format('MM/DD/YYYY');
+      }
+  },
+  defaultLayout: 'main'
+});
+
 // handlebar configuration
 app.set('views', path.join(__dirname, 'views'));
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+
+// helper
+// handlebars.registerHelper('readableDate', function(date) {
+//   return '<span class="date">'
+//     + moment(date).format('YYYY-MM-DD')
+//     + '</span>';
+// });
+
+// handlebars helpers
+require('handlebars-helpers')(['comparison']);
 
 /////////////////////
 // Expess Session

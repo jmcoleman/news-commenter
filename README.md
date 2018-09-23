@@ -26,8 +26,8 @@ From the command line, execute the below to setup the project or by running 'npm
 $ npm install express --save
 $ npm install express-session --save
 $ npm install express-handlebars --save
+$ npm install handlebars-helpers --save
 $ npm install mongoose --save
-$ npm install mongojs --save
 $ npm install body-parser --save
 $ npm install cheerio --save
 $ npm install request --save
@@ -38,16 +38,15 @@ $ npm install moment --save
 
 
 ```
-Create an .env file at the root of the project and populate with connection info.
+Create an .env file at the root of the project and populate with any sensitive connection info and/or desired logging.
 
 ```
-# Local DB
+# express session
+SECRET_KEY=ENTER_SECRET_HERE
 
-DB_DEV_USERNAME="ENTER_DB_USER_NAME_HERE"
-DB_DEV_PASSWORD="ENTER_PASSWORD_HERE"
-DB_DEV_DATABASE="ENTER_DB_NAME_HERE"
-DB_DEV_HOST="127.0.0.1"
-DB_DEV_PORT=ENTER_PORT_NAME_HERE
+# verbose logs
+#DEBUG=* node server.js
+#DEBUG=express:router* node server.js   
 
 ```
 

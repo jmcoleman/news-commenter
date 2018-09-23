@@ -2,7 +2,6 @@
 
   <div class="container text-center ">
     <h1 class="shadow">Articles</h1>
-    <p class="shadow-lite">"All the News That 's Fit to Scrape"</p>
 
     {{#if articles.length}}
         <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
@@ -25,18 +24,21 @@
                 <div class="thumbnail">
                     <a target="_blank" href={{urlLink}}>
                         <h3>{{headline}}</h3>
-                        {{!-- <img src="{{this.image}}"  />--}}
                     </a>
-                    <div class="caption">
-                        {{!-- <h3>{{headline}}</h3> --}}
+                    <div class="caption formcontainer">
                         <h4>{{author}}</h4>
+                        <h6>{{readableDate date}}</h6>
                         <div>{{summary}}</div>
-                        <form method="POST" action="/">
-                            <input type="hidden" name="headline" value="{{headline}}">
-                            <input type="hidden" name="urlLink" value="{{urlLink}}">
-                            <input type="hidden" name="author" value="{{author}}">
+                        <form id="form-save-article">
+                            <input type="hidden" name="headline" value="{{headline}}" class="form-control">
+                            <input type="hidden" name="summary" value="{{summary}}" class="form-control">
+                            <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
+                            <input type="hidden" name="author" value="{{author}}" class="form-control">
+                            <input type="hidden" name="date" value="{{date}}" class="form-control">
                             <br>
-                            <button class="btn btn-info" data-loading-text="<i class='fa fa-spinner fa-spin'></i>Saving" type="submit">Save</button>
+                            {{#isTruthy ../isScraping}}
+                                <button class="btn btn-info" type="submit">Save</button>
+                            {{/isTruthy}}
                         </form>
                     </div>
                 </div>
