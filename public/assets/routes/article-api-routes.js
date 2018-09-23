@@ -72,23 +72,11 @@ module.exports = function(app) {
     console.log("route: create article");
     console.log(JSON.stringify(req.body));
 
-    // db.Articles.create(req.body).then(function(dbResult) {
-    //   console.log("Article created.");
-    //   res.json(dbResult);
-    // }).catch(function (err) {
-    //   // send to handlebars
-    //   var hbsObject = {
-    //     article: req.body
-    //   };
-    //   res.render("articles", hbsObject);
-    // });
-
-
     // Save a new Example using the data object
     db.Article.create({
       headline: req.body.headline,
       summary: req.body.summary.trim(),
-      urlLink: SMASHING_MAGAZINE_URL + req.body.urlLink,
+      urlLink: req.body.urlLink,
       author: req.body.author,
       date: req.body.date
     })

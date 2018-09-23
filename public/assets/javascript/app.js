@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+    // make the selected nav bar item, active
+    // $( '#top-nav .navbar-nav a' ).on( 'click', function () {
+    //     $( '#top-nav .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+    //     $(this).parent( 'li' ).addClass( 'active' );
+    // });
+
+    $(".navbar-nav .nav-link").on("click", function(){
+        $(".navbar-nav").find(".active").removeClass("active");
+        $(this).addClass("active");
+     });
+
     //////////////////////////////////
     // save the article to MongoDB
     //////////////////////////////////

@@ -1,7 +1,7 @@
-<div class="jumbotron">
+<div class="jumbotron shadow">
 
   <div class="container text-center ">
-    <h1 class="shadow">Articles</h1>
+    <h1>Articles</h1>
 
     {{#if articles.length}}
         
@@ -25,7 +25,7 @@
         <div class="row">
             {{#each articles}}
             <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
+                <div>
                     <a target="_blank" href={{urlLink}}>
                         <h3>{{headline}}</h3>
                     </a>
@@ -39,7 +39,6 @@
                             <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
                             <input type="hidden" name="author" value="{{author}}" class="form-control">
                             <input type="hidden" name="date" value="{{date}}" class="form-control">
-                            <br>
                             {{#isTruthy ../isScraping}}
                                 <button class="btn btn-info" type="submit" id={{@index}}>Save</button>
                             {{/isTruthy}}
@@ -50,10 +49,6 @@
             {{/each}}
         </div>
     {{/if}} 
-
-    <div class="article-container">
-
-    </div>
 
   </div>
 
