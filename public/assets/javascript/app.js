@@ -21,8 +21,8 @@ $(document).ready(function() {
         event.preventDefault();
 
         console.log(JSON.stringify(this));
-        // var id = $(document.activeElement).attr("data-id");
-        var id = document.activeElement.id;
+        // get the data-id attribute from the save button
+        var id = $(document.activeElement).data("id")
         console.log("Index is: " + id.toString());
 
         var newArticle = {

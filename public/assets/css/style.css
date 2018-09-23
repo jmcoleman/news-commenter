@@ -34,11 +34,6 @@ body {
     padding-top: 50px;
   }
 
-  .bootbox-body .btn {
-    float: right;
-    margin: 5px;
-  }
-
   /*******************
   ** jumbotron
   ********************/
@@ -61,13 +56,12 @@ body {
   ** card styling old
   ********************/
 
-  .card a:not([href]):not([tabindex]).scrape-new {
+  /* .card a:not([href]):not([tabindex]).scrape-new {
     color: #2196F3;
   }
 
   .card {
     border-radius: 0;
-    /* box-shadow: 3px 3px 20px lightslategrey; */
     margin: 20px 0;
   }
   
@@ -100,7 +94,7 @@ body {
     color: white;
     display: inline-block;
     width: 80%;
-  }
+  } */
   
   /**********************
   ** card styling new

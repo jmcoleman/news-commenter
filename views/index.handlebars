@@ -1,55 +1,55 @@
-<div class="jumbotron shadow">
 
-  <div class="container text-center ">
     <h1>Articles</h1>
 
     {{#if articles.length}}
-        
-            <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{#isTruthy isScraping}}You've found {{articles.length}} article(s).{{/isTruthy}}
-                {{#isFalsey isScraping}}You have {{articles.length}} saved article(s).{{/isFalsey}}
-            </div> 
-        
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{#isTruthy isScraping}}You've found {{articles.length}} article(s).{{/isTruthy}}
+            {{#isFalsey isScraping}}You have {{articles.length}} saved article(s).{{/isFalsey}}
+        </div> 
     {{else}}
-        <div id="length-alert" class="alert alert-info alert-dismissible" role="alert">
+        <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>No articles yet. <a href="/scrape" class="alert-link">Go ahead and scrape some!</a>
         </div>
     {{/if}} 
 
-    {{#if articles}} 
-        <div class="row">
+    <div class="card-columns">
+        {{#if articles}} 
             {{#each articles}}
-            <div class="col-sm-6 col-md-4">
-                <div>
-                    <a target="_blank" href={{urlLink}}>
-                        <h3>{{headline}}</h3>
-                    </a>
-                    <div class="caption formcontainer">
-                        <h4>{{author}}</h4>
-                        <h6>{{readableDate date}}</h6>
-                        <div>{{summary}}</div>
-                        <form id="form-save-article-{{@index}}" class="form-save-article">
-                            <input type="hidden" name="headline" value="{{headline}}" class="form-control">
-                            <input type="hidden" name="summary" value="{{summary}}" class="form-control">
-                            <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
-                            <input type="hidden" name="author" value="{{author}}" class="form-control">
-                            <input type="hidden" name="date" value="{{date}}" class="form-control">
-                            {{#isTruthy ../isScraping}}
-                                <button class="btn btn-info" type="submit" id={{@index}}>Save</button>
-                            {{/isTruthy}}
-                        </form>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{headline}}</h3>
+                        <h6>Written by {{author}}</h6>
+                        <h6 class="text-muted">{{readableDate date}}</h6>
+                        <hr>
+                        <p class="card-text">{{summary}}</p>
+                        <div class="formcontainer">
+                            <form id="form-save-article-{{@index}}" class="form-save-article">
+                                <input type="hidden" name="headline" value="{{headline}}" class="form-control">
+                                <input type="hidden" name="summary" value="{{summary}}" class="form-control">
+                                <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
+                                <input type="hidden" name="author" value="{{author}}" class="form-control">
+                                <input type="hidden" name="date" value="{{date}}" class="form-control">
+                                <div class="d-flex">
+                                    <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
+                                    {{#isFalsey ../isScraping}}
+                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1"><i class="far fa-comments pr-1"></i> Comment</button>
+                                    {{/isFalsey}}
+                                    {{#isTruthy ../isScraping}}
+                                        <button id="btn-article-save" class="btn btn-success mb-2 mx-1 ml-auto" type="submit" data-id={{@index}}><i class="fas fa-thumbtack pr-1"></i></i> Pin It</button>
+                                    {{/isTruthy}}
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
             {{/each}}
-        </div>
-    {{/if}} 
+        {{/if}} 
+    </div>
 
-  </div>
 
-</div>
+
