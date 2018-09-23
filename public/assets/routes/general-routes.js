@@ -67,35 +67,37 @@ module.exports = function(app) {
           // If this found element had both a title and a link
           if (headline && urlLink) {
 
-            // Save these results in an object that we'll push into the results array we defined earlier
-            results.push({
+            ////////////////////////
+            // push to Mongo DB
+            ////////////////////////
+
+            console.log("route: scape is creating article");
+            // Save a new Example using the data object
+            db.Article.create({
               headline: headline,
               summary: summary.trim(),
               urlLink: SMASHING_MAGAZINE_URL + urlLink,
               author: author,
               date: date
-            });
-            
-            ////////////////////////
-            // push to Mongo DB
-            ////////////////////////
+            })
+            .then(function(savedData) {
+              // If saved successfully, print the new document to the console
+              // console.log(savedData);
 
-            // Save a new Example using the data object
-            // db.Article.create({
-            //   headline: headline,
-            //   summary: summary.trim(),
-            //   urlLink: SMASHING_MAGAZINE_URL + urlLink,
-            //   author: author,
-            //   date: date
-            // })
-            // .then(function(savedData) {
-            //   // If saved successfully, print the new document to the console
-            //   // console.log(savedData);
-            // })
-            // .catch(function(err) {
-            //   // If an error occurs, log the error message
-            //   console.log(err.message);
-            // });
+              // save the results in an object that we'll push into the results array we defined earlier and send to the UI
+              results.push({
+                headline: headline,
+                summary: summary.trim(),
+                urlLink: SMASHING_MAGAZINE_URL + urlLink,
+                author: author,
+                date: date
+              });
+
+            })
+            .catch(function(err) {
+              // If an error occurs, log the error message
+              console.log(err.message);
+            });
 
           }
 
@@ -114,7 +116,11 @@ module.exports = function(app) {
 
   // GET root route
   app.get("/", function(req, res) {
-    res.redirect("/api/articles?saved=true");
+
+    // show all of the existing content along with the comments
+    res.redirect("/api/articles");
+    
+    // res.redirect("/scrape");
   });
 
   // GET scrape route to retrieve articles

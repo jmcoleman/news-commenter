@@ -1,29 +1,15 @@
 html {
-  /* position: relative; */
   min-height: 100%;
 }
 
 body {
   margin-bottom: 0px;
   background-color: #f0f0f0;
-
-  /* background-image: url("../images/preview_newspaper.jpg"); */
-  /* background-image: url("../images/photo-1530005664775-d8eac1d8ba77.jpg"); */
-  /* background-position: center; */
-  /* background-repeat: no-repeat; */
-  /* background-size: cover; */
-
-  /* background-image: url("../images/newspaper2.png");
-  background-size: 350px 300px;
-  background-origin: content-box;
-  background-position: 0px 80px;
-  height: 100%; */
 }
  
   /*******************
   ** general styling
   ********************/
-
   #page-header {
     height: 200px;
     background: url('../images/image1.jpg');
@@ -34,133 +20,13 @@ body {
     padding-top: 50px;
   }
 
-  /*******************
-  ** jumbotron
-  ********************/
-  
-  /* .jumbotron {
-    position: relative;
-    width: 100%;
-    padding: 0 0 20px 0;
-    font-family: "Cormorant SC";
-    box-shadow: 10px 5px 20px 2px lightslategrey;
-    text-align: center;
-  }
-*/
-  
-  /*******************
-  ** containers
-  ********************/
-  
-  /*******************
-  ** card styling old
-  ********************/
-
-  /* .card a:not([href]):not([tabindex]).scrape-new {
-    color: #2196F3;
-  }
-
-  .card {
-    border-radius: 0;
-    margin: 20px 0;
-  }
-  
-  .card .card-header {
-    background-color: #2196f3;
-    position: relative;
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
-  
-  .card .card-header h3 {
-    color: white;
-  }
-  
-  .card .card-header .btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .card .card-header .btn.delete {
-    right: 160px;
-  }
-  
-  .card .card-body {
-    font-size: 16px;
-  }
-  
-  .card .card-header .article-link {
-    color: white;
-    display: inline-block;
-    width: 80%;
-  } */
-  
-  /**********************
-  ** card styling new
-  ***********************/
-
-  /* @import url('https://fonts.googleapis.com/css?family=Oswald|Poppins');
-  body {
-      /* font-family: 'Oswald', sans-serif; */
-     /* font-family: 'Poppins', sans-serif;
-  } */
-
-  .card-box {
-      background: #FAFAFA;
-      min-height: 300px;
-      position: relative;
-      padding: 30px 30px 20px;
-      margin-bottom: 20px;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      position: relative;
-      cursor: pointer;
-  }
-
-  .card-box:hover {
-      background: linear-gradient(to right, #1fa2ff17 0%, #12d8fa2b 51%, #1fa2ff36 100%);
-  }
-
-  .card-box:after {
-      display: block;
-      background: #2196F3;
-      border-top: 2px solid #2196F3;
-      content: '';
-      width: 100%;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-  }
-
-  .card-title h2 {
-      margin: 0;
-      padding-top: 5%;
-      color: #2196F3;
-      font-family: 'Oswald', sans-serif;
-      text-transform: uppercase;
-      font-size: 24px;
-      line-height: 1;
-      margin-bottom: 15px;
-  }
-
-  .card-title p {
-      margin: 0;
-      margin-bottom: 10px;
-      font-size: 16px;
-  }
-
-  .card-link a {
-      text-decoration: none;
-      font-family: 'Oswald', sans-serif;
-      color: #FF5722;
-      font-size: 15px;
+  /* rotate icon by 45 degrees */
+  .fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
 
   /*******************

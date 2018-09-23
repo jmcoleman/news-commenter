@@ -19,10 +19,12 @@ $(document).ready(function() {
 
         // Make sure to preventDefault on a submit event.
         event.preventDefault();
+        
+        var btnElement = $(document.activeElement);
 
         console.log(JSON.stringify(this));
-        // get the data-id attribute from the save button
-        var id = $(document.activeElement).data("id")
+        // get the data-id attribute from button
+        var id = $(document.activeElement).data("id");
         console.log("Index is: " + id.toString());
 
         var newArticle = {
@@ -43,8 +45,13 @@ $(document).ready(function() {
         }).then(
         function() {
             console.log("created new article");
+
+            $(btnElement).attr('disabled', 'disabled');
+            $(btnElement).addClass('disabled','disabled');
+            $(btnElement).html("<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned");
+
             // Reload the page
-            location.reload();
+            // location.reload();
         });
     });
  

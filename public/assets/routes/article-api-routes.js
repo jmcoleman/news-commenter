@@ -7,8 +7,6 @@
 // Requiring our models
 var db = require("./../../../models");
 
-const SMASHING_MAGAZINE_URL = "https://www.smashingmagazine.com";
-
 /////////////////
 // Routes
 /////////////////

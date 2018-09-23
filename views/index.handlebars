@@ -1,19 +1,20 @@
 
-    <h1>Articles</h1>
+    <h1>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h1>
 
     {{#if articles.length}}
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{#isTruthy isScraping}}You've found {{articles.length}} article(s).{{/isTruthy}}
-            {{#isFalsey isScraping}}You have {{articles.length}} saved article(s).{{/isFalsey}}
+            {{#isTruthy isScraping}}You've found {{articles.length}} new article(s).{{/isTruthy}}
+            {{#isFalsey isScraping}}There are {{articles.length}} article(s) in the MongoDB collection.{{/isFalsey}}
         </div> 
     {{else}}
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-            </button>No articles yet. <a href="/scrape" class="alert-link">Go ahead and scrape some!</a>
+            </button>{{#isFalsey isScraping}}No articles yet. Go ahead and <a href="/scrape" class="alert-link">Scrape</a> some!{{/isFalsey}}
+            {{#isTruthy isScraping}}No new articles to add.  Navigate <a href="/" class="alert-link">Home </a>to check out the existing content.{{/isTruthy}}
         </div>
     {{/if}} 
 
@@ -36,12 +37,12 @@
                                 <input type="hidden" name="date" value="{{date}}" class="form-control">
                                 <div class="d-flex">
                                     <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
-                                    {{#isFalsey ../isScraping}}
-                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1"><i class="far fa-comments pr-1"></i> Comment</button>
-                                    {{/isFalsey}}
-                                    {{#isTruthy ../isScraping}}
-                                        <button id="btn-article-save" class="btn btn-success mb-2 mx-1 ml-auto" type="submit" data-id={{@index}}><i class="fas fa-thumbtack pr-1"></i></i> Pin It</button>
-                                    {{/isTruthy}}
+                                    {{!-- {{#isTruthy ../isScraping}} --}}
+                                        <button id="btn-article-save" class="btn btn-success mb-2 mx-1" type="submit" data-id={{@index}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
+                                    {{!-- {{/isTruthy}} --}}
+                                    {{!-- {{#isFalsey ../isScraping}} --}}
+                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto"><i class="far fa-comments pr-1"></i> Comment</button>
+                                    {{!-- {{/isFalsey}} --}}
                                 </div>
                             </form>
                         </div>
