@@ -16,12 +16,9 @@ module.exports = function(app) {
   // GET route for getting all of the articles
   /////////////////////////////////////////////
   app.get("/api/articles", function(req, res) {
-    var query = {};
 
     console.log("route: all articles");
     // console.log(JSON.stringify(req.body));
-
-    var saved = req.query.saved ? true : false;
 
     //find all articles
     db.Article.find({})
@@ -111,6 +108,47 @@ module.exports = function(app) {
       });
   });
 
+  /////////////////////////////////////////////
+  // PUT route for updating
+  /////////////////////////////////////////////
+  app.put("/api/articles/:id", function(req, res) {
+
+    console.log("route: update article");
+    // console.log(JSON.stringify(req.body));
+    // console.log("request query: " + req.query.articles_id);
+    // console.log("request params: " + req.params.id);
+
+    var id = (req.params.id) ? req.params.id : req.body.id;
+    var comment = req.query.comment ? true : false;
+    
+    // update db here
+    db.Article.
+      findOne({ _id: id }).
+      populate('comment'). 
+      exec(function (err, article) {
+        if (err) return handleError(err);
+
+        console.log('The author is %s', article.comment.author);
+        console.log('The comment is %s', article.comment.text);
+      });
+
+
+    });
+
+    ///////////////////////////////
+    // gets an articles comments
+    ///////////////////////////////
+    app.get("/api/articles/:id/comments", function(req, res) {
+
+      var id = (req.params.id) ? req.params.id : req.body.id;
+
+      db.Article.
+        findOne({ _id: id }).
+        populate({
+          path: 'comments',
+        });
+    
+    });
 
 };
 
@@ -120,6 +158,8 @@ module.exports = function(app) {
   // // PUT route for updating
   // /////////////////////////////////////////////
   // app.put("/api/articles/:id", function(req, res) {
+
+  //    var saved = req.query.saved ? true : false;
 
   //   console.log("route: update article");
   //   console.log(JSON.stringify(req.body));
@@ -137,4 +177,17 @@ module.exports = function(app) {
   //     }).then(function(dbResult) {
   //       res.json(dbResult);
   //   });
+  // });
+
+  // Story.
+  // findOne({ title: /casino royale/i }).
+  // populate('author', 'name'). // only return the Persons name
+  // exec(function (err, story) {
+  //   if (err) return handleError(err);
+
+  //   console.log('The author is %s', story.author.name);
+  //   // prints "The author is Ian Fleming"
+
+  //   console.log('The authors age is %s', story.author.age);
+  //   // prints "The authors age is null'
   // });

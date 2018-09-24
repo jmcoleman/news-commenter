@@ -14,7 +14,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>{{#isFalsey isScraping}}No articles yet. Go ahead and <a href="/scrape" class="alert-link">Scrape</a> some!{{/isFalsey}}
-            {{#isTruthy isScraping}}No new articles to add.  Navigate <a href="/" class="alert-link">Home </a>to check out the existing content.{{/isTruthy}}
+            {{#isTruthy isScraping}}No new articles have been added.  Navigate <a href="/" class="alert-link">Home </a>to check out the existing content.{{/isTruthy}}
         </div>
     {{/if}} 
 
@@ -28,8 +28,11 @@
                         <h6 class="text-muted">{{readableDate date}}</h6>
                         <hr>
                         <p class="card-text">{{summary}}</p>
+
+                        <!-- SAVE NEW ARTICLE (that hasn't been saved to Mongo yet) -->
                         <div class="formcontainer">
-                            <form id="form-save-article-{{@index}}" class="form-save-article">
+                            <form id="form-save-article-{{_id}}" class="form-save-article">
+                                <input type="hidden" name="id" class="form-control" value="{{_id}}">
                                 <input type="hidden" name="headline" value="{{headline}}" class="form-control">
                                 <input type="hidden" name="summary" value="{{summary}}" class="form-control">
                                 <input type="hidden" name="urlLink" value="{{urlLink}}" class="form-control">
@@ -37,15 +40,40 @@
                                 <input type="hidden" name="date" value="{{date}}" class="form-control">
                                 <div class="d-flex">
                                     <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
+                                    {{#isFalsey ../isScraping}}                                    
+                                        {{!-- type="submit" --}}
+                                        <button hidden id="btn-article-save" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
+                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-toggle="collapse" data-target="#comments-{{_id}}"><i class="far fa-comments pr-1"></i></button>
+                                    {{/isFalsey}}
+
                                     {{!-- {{#isTruthy ../isScraping}} --}}
-                                        <button id="btn-article-save" class="btn btn-success mb-2 mx-1" type="submit" data-id={{@index}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
                                     {{!-- {{/isTruthy}} --}}
                                     {{!-- {{#isFalsey ../isScraping}} --}}
-                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto"><i class="far fa-comments pr-1"></i> Comment</button>
                                     {{!-- {{/isFalsey}} --}}
                                 </div>
                             </form>
                         </div>
+
+                        <!-- SAVE COMMENT -->
+                        <div id="comments-{{_id}}" class="collapse">
+                            <div class="formcontainer">
+                                <form id="form-save-comment-{{_id}}">
+                                    <div>
+                                        <input type="hidden" id="articleid_update" name="article_id" class="form-control" value="{{_id}}">
+                                        <div class="form-group">
+                                            <label for="comment_update">Comment</label>
+                                            <textarea id="comment_update" name="comment" placeholder="Comments..." rows="5" maxlength="500" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username_update">User Name</label>
+                                            <input type="text" id="username_update" name="user_name" placeholder="User Name..." class="form-control">
+                                        </div>
+                                    </div>
+                                    <button id="btn-article-add-comment" class="btn btn-success mb-2 mx-1 ml-auto" type="submit" data-id={{_id}}>Add</button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             {{/each}}
