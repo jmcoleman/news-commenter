@@ -7,7 +7,7 @@
 const cheerio = require("cheerio");
 const request = require("request");
 const db = require("./../../../models");
-const SHOW_DB_SCRAPE = false;
+const LOAD_FROM_SCRAPE = false;
 
 const SMASHING_MAGAZINE_URL = "https://www.smashingmagazine.com";
 
@@ -131,33 +131,67 @@ module.exports = function(app) {
       console.log("returned results in");
       // console.log(JSON.stringify(articleList));
   
+// CURRENT LOGIC
       // send to handlebars
-      if (!SHOW_DB_SCRAPE) {
-        var hbsScrapeObject = {
-          articles: articleList,
-          isScraping: true
-        };
-        res.render("index", hbsScrapeObject);
-      } else {
-        // get from Mongo and render
+      // if (LOAD_FROM_SCRAPE) {
+      //   var hbsScrapeObject = {
+      //     articles: articleList,
+      //     isScraping: true
+      //   };
+      //   res.render("index", hbsScrapeObject);
+      // } else {
+      //   // get from MongoDB to render
 
-        //find all articles
-        db.Article.find({})
-        .then(function(dbResult) {
-          // send to handlebars
-          var hbsObject = {
-            articles: dbResult,
-            isScraping: true
-          };
-          res.render("index", hbsObject);       
-        })
-        .catch(function(err) {
-          // If an error occurs, log the error message
-          console.log(err.message);
-        });
+      //   //find all articles
+      //   db.Article.find({})
+      //   .then(function(dbResult) {
+      //     // send to handlebars
+      //     var hbsObject = {
+      //       articles: dbResult,
+      //       isScraping: true
+      //     };
+      //     res.render("index", hbsObject);       
+      //   })
+      //   .catch(function(err) {
+      //     // If an error occurs, log the error message
+      //     console.log(err.message);
+      //   });
+      // }
 
-      }
+// NEW LOGIC
+// for each item in the articlList, find it in Mongo and if it's not there, append it to a new array
+// save the new ones to mongo
+      var newArticleList = [];
 
+      articleList.forEach((item, index) => {
+        db.Article.find({headline: item.headline})
+          .then(function(dbResult){
+            if (dbResult) {
+              // if find it, don't add to new array
+              console.log("found it");
+
+            } else {
+              // if don't find it, add it
+              newArticleList.push(item);
+            }
+
+          })
+          .catch(function(err) {
+            // If an error occurs, log the error message
+            console.log(err.message);
+          });
+
+      });
+        
+      // send to handlebars
+      var hbsObject = {
+        articles: newArticleList,
+        isScraping: true
+      };
+      res.render("index", hbsObject);   
+    
+
+      // END SCRAPESITE
     });
 
   });

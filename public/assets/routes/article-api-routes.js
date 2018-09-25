@@ -6,6 +6,7 @@
 
 // Requiring our models
 var db = require("./../../../models");
+var routeCalled = 0;
 
 /////////////////
 // Routes
@@ -17,7 +18,7 @@ module.exports = function(app) {
   ///////////////////////////////////////////////////////////////////////////
   app.get("/api/articlesX", function(req, res) {
 
-    console.log("route: all articles");
+    console.log("route: all articlesX");
     // console.log(JSON.stringify(req.body));
 
     //find all articles
@@ -43,8 +44,10 @@ module.exports = function(app) {
   ///////////////////////////////////////////////////////////////////////////
   app.get("/api/articles", function(req, res) {
 
+    routeCalled += 1;
     console.log("route: all articles");
     // console.log(JSON.stringify(req.body));
+    console.log('routeCalled', routeCalled);
 
     // get all articles and associated comments
     db.Article.
@@ -69,7 +72,7 @@ module.exports = function(app) {
   /////////////////////////////////////////////////////////////////////////////
   app.get("/api/articlesX/:id", function(req, res) {
 
-    console.log("route: specific article");
+    console.log("route: specific articleX");
     // console.log(JSON.stringify(req.body));
 
     db.Article.findById(req.params.id, function(err, article) {})
