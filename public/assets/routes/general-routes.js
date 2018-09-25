@@ -125,7 +125,6 @@ module.exports = function(app) {
   // GET scrape route to retrieve articles
   app.get("/scrape", function(req, res) {
     console.log("route: in scrape articles");
-    // console.log(JSON.stringify(req.body));
 
     // scrapes and returns articles
     scrapeSite(function(err,articleList) {
@@ -166,8 +165,8 @@ module.exports = function(app) {
   // GET clear all articles (and their associated comments) route
   app.get("/clear", function(req, res) {
     console.log("route: in clear all articles");
-    // console.log(JSON.stringify(req.body));
 
+    // clear all data
     db.ArticleComment.deleteMany({}, function(err) {});
     db.Article.deleteMany({}, function(err) {});
 

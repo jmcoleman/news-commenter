@@ -154,7 +154,7 @@ module.exports = function(app) {
     // ** save a new comment and associate it to an article
     ////////////////////////////////////////////////////////
     // Route for saving a new comment to the db and associating it with a article
-    app.post("/comment/:id", function(req, res) {
+    app.post("/comments/:id", function(req, res) {
 
       var article_id = (req.params.id) ? req.params.id : req.body.id;
 

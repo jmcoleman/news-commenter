@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
+    ////////////////////////////////////////////
     // make the selected nav bar item, active
+    ////////////////////////////////////////////
     // $( '#top-nav .navbar-nav a' ).on( 'click', function () {
     //     $( '#top-nav .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
     //     $(this).parent( 'li' ).addClass( 'active' );
@@ -11,9 +13,9 @@ $(document).ready(function() {
     //     $(this).addClass("active");
     //  });
 
-    //////////////////////////////////
-    // save the article to MongoDB
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    // save the article to MongoDB (loading right after the scrape now)
+    ///////////////////////////////////////////////////////////////////////////
     $(".form-save-article").on("submit", function(event) {
 
         // Make sure to preventDefault on a submit event.
@@ -62,14 +64,10 @@ $(document).ready(function() {
     // add the comment to an article
     //////////////////////////////////
     $(".form-save-comment").on("submit", function(event) {
-
         // Make sure to preventDefault on a submit event.
         event.preventDefault();
         
         console.log("in comment add ajax call");
-
-        // var id2 = $("#form-save-comment-" + id + " [name=_id]").val().trim(),
-        // var btnElement = $(document.activeElement);
 
         var btnElement = $(document.activeElement);
 
@@ -88,7 +86,7 @@ $(document).ready(function() {
             console.log(objComment);
 
             // Send the POST request.
-            $.ajax("/comment/" + id, {
+            $.ajax("/comments/" + id, {
                 type: "POST",
                 data: objComment
             }).then(
@@ -96,59 +94,35 @@ $(document).ready(function() {
                 console.log("updated article coment");
                 console.log("GOT IT: " + JSON.stringify(response));
 
+                // clear the form and collapse it
                 document.getElementById("form-save-comment-" + id).reset();
+                $('.collapse').collapse('hide');
+
+                // update the number of comments
+                var currentLength = $("#comment-length-" + id).text();
+                $("#comment-length-" + id).text(parseInt(currentLength) + 1);
             });
-        
         }
 
     });
+
+
+
 });
 
-    /////////////////////
-    // update the user
-    /////////////////////
-    // $("#form-update-user").on("submit", function(event) {
-    //     // Make sure to preventDefault on a submit event.
-    //     event.preventDefault();
-
-    //     var id = $("[name=user_id]").val().trim();
-
-    //     // TODO if we are storing the password, someone will need to add logic to encrypt it... should remove if not
-
-    //     var UserData = {
-    //         user_name: $("#form-update-user [name=user_name]").val().trim(),
-    //         user_email: $("#form-update-user [name=user_email]").val().trim(),
-    //         user_password: $("#form-update-user [name=user_password]").val().trim()
-    //     };
-
-    //     console.log(": update user");
-    //     console.log(UserData);
-
-    //     // Send the PUT request.
-    //     $.ajax("/api/users/" + id, {
-    //         type: "PUT",
-    //         data: UserData
-    //     }).then(
-    //     function() {
-    //         console.log("Updated id: ", id);
-    //         // Reload the page to get the updated list
-    //         location.reload();
-    //     }
-    //     );
-    // });
 
     /////////////////////
-    // delete the user
+    // delete the comment
     /////////////////////
-    // $(".delete-user").on("click", function(event) {
+    // $(".delete-comment").on("click", function(event) {
     //     var id = $(this).data("id");
 
     //     // Send the DELETE request.
-    //     $.ajax("/api/users/" + id, {
+    //     $.ajax("/api/comments/" + id, {
     //         type: "DELETE"
     //     }).then(
     //     function() {
-    //         console.log("deleted user", id);
+    //         console.log("deleted comment", id);
             
     //         // Reload the page to get the updated list
     //         location.reload();
