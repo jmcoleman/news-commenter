@@ -59,13 +59,15 @@ $(document).ready(function() {
     });
  
     //////////////////////////////////
-    // update the article comments
+    // add the comment to an article
     //////////////////////////////////
     $(".form-save-comment").on("submit", function(event) {
 
         // Make sure to preventDefault on a submit event.
         event.preventDefault();
         
+        console.log("in comment add ajax call");
+
         // var id2 = $("#form-save-comment-" + id + " [name=_id]").val().trim(),
         // var btnElement = $(document.activeElement);
 
@@ -76,30 +78,25 @@ $(document).ready(function() {
             console.log(JSON.stringify(this));
             // get the data-id attribute from button
             var id = $(document.activeElement).data("id");
-            console.log("Index is: " + id.toString());
 
-            var updArticle = {
-                id: $("#form-save-comment-" + id + " [name=id]").val().trim(),
-                headline: $("#form-save-comment-" + id + " [name=headline]").val().trim(),
-                summary: $("#form-save-comment-" + id + " [name=summary]").val().trim(),
-                urlLink: $("#form-save-comment-" + id + " [name=urlLink]").val().trim(),
-                author: $("#form-save-comment-" + id + " [name=author]").val().trim(),
-                date: $("#form-save-comment-" + id + " [name=date]").val().trim()
+            var objComment = {
+                userName: $("#form-save-comment-" + id + " [name=user_name]").val().trim(),
+                comment: $("#form-save-comment-" + id + " [name=comment]").val().trim()
             };
 
             console.log(": update article comment");
-            console.log(updArticle);
+            console.log(objComment);
 
             // Send the POST request.
-            $.ajax("/api/articles/comment", {
-                type: "PUT",
-                data: updArticle
+            $.ajax("/comment/" + id, {
+                type: "POST",
+                data: objComment
             }).then(
-            function() {
+            function(response) {
                 console.log("updated article coment");
+                console.log("GOT IT: " + JSON.stringify(response));
 
-                // Reload the page
-                // location.reload();
+                document.getElementById("form-save-comment-" + id).reset();
             });
         
         }

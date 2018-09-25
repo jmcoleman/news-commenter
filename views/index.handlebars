@@ -41,8 +41,7 @@
                                 <div class="d-flex">
                                     <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
                                     {{#isFalsey ../isScraping}}                                    
-                                        {{!-- type="submit" --}}
-                                        <button hidden id="btn-article-save" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
+                                        <button hidden id="btn-article-pin" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
                                         <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-toggle="collapse" data-target="#comments-{{_id}}"><i class="far fa-comments pr-1"></i></button>
                                     {{/isFalsey}}
 
@@ -57,9 +56,9 @@
                         <!-- SAVE COMMENT -->
                         <div id="comments-{{_id}}" class="collapse">
                             <div class="formcontainer">
-                                <form id="form-save-comment-{{_id}}">
+                                <form id="form-save-comment-{{_id}}" class="form-save-comment">
                                     <div>
-                                        <input type="hidden" id="articleid_update" name="article_id" class="form-control" value="{{_id}}">
+                                        {{!-- <input type="hidden" id="articleid_update" name="article_id" class="form-control" value="{{_id}}"> --}}
                                         <div class="form-group">
                                             <label for="comment_update">Comment</label>
                                             <textarea id="comment_update" name="comment" placeholder="Comments..." rows="5" maxlength="500" class="form-control"></textarea>

@@ -65,10 +65,10 @@ module.exports = function(app) {
           var urlLink = $(element).find(".article--post__title").children().attr("href");
           var date = $(element).find(".article--post__teaser time").attr("datetime");
 
-          // If this found element had both a title and a link
+          // If this found element had both a headline and a link
           if (headline && urlLink) {
 
-            // save the results in an object that we'll push into the results array we defined earlier and send to the UI
+            // save the results in an object that we'll push into the results array that we defined earlier
             results.push({
               headline: headline,
               summary: summary.trim(),
@@ -82,6 +82,7 @@ module.exports = function(app) {
             ////////////////////////
 
             console.log("route: scrape is creating article");
+
             // Save a new Example using the data object
             db.Article.create({
               headline: headline,
@@ -91,7 +92,7 @@ module.exports = function(app) {
               date: date
             })
             .then(function(savedData) {
-              // If saved successfully, print the new document to the console
+              // if saved successfully
               // console.log(savedData);
 
 
@@ -162,11 +163,12 @@ module.exports = function(app) {
 
   });
   
-  // GET clear all articles route
+  // GET clear all articles (and their associated comments) route
   app.get("/clear", function(req, res) {
     console.log("route: in clear all articles");
     // console.log(JSON.stringify(req.body));
 
+    db.ArticleComment.deleteMany({}, function(err) {});
     db.Article.deleteMany({}, function(err) {});
 
     res.redirect("/api/articles");

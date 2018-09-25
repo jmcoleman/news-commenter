@@ -135,59 +135,47 @@ module.exports = function(app) {
 
     });
 
-    ///////////////////////////////
-    // gets an articles comments
-    ///////////////////////////////
-    app.get("/api/articles/:id/comments", function(req, res) {
+    // ///////////////////////////////
+    // // gets an articles comments
+    // ///////////////////////////////
+    // app.get("/api/articles/:id/comments", function(req, res) {
 
-      var id = (req.params.id) ? req.params.id : req.body.id;
+    //   var id = (req.params.id) ? req.params.id : req.body.id;
 
-      db.Article.
-        findOne({ _id: id }).
-        populate({
-          path: 'comments',
-        });
+    //   db.Article.
+    //     findOne({ _id: id }).
+    //     populate({
+    //       path: 'comments',
+    //     });
     
+    // });
+
+    ////////////////////////////////////////////////////////
+    // ** save a new comment and associate it to an article
+    ////////////////////////////////////////////////////////
+    // Route for saving a new comment to the db and associating it with a article
+    app.post("/comment/:id", function(req, res) {
+
+      var article_id = (req.params.id) ? req.params.id : req.body.id;
+
+      // Create a new comment in the db
+      db.ArticleComment.create(req.body)
+        .then(function(dbComment) {
+          // If a ArticleComment was created successfully, find the Article and push the new ArticleComment _id to the Articles `comments` array
+          // { new: true } tells the query that we want it to return the updated Article -- it returns the original by default
+          // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+          return db.Article.findOneAndUpdate({_id: article_id}, { $push: { comments: dbComment._id } }, { new: true });
+        })
+        .then(function(dbArticle) {
+          // If the User was updated successfully, send it back to the client
+          res.json(dbArticle);
+        })
+        .catch(function(err) {
+          // If an error occurs, send it back to the client
+          res.json(err);
+        });
     });
+
 
 };
 
-//////////////
-
-  // /////////////////////////////////////////////
-  // // PUT route for updating
-  // /////////////////////////////////////////////
-  // app.put("/api/articles/:id", function(req, res) {
-
-  //    var saved = req.query.saved ? true : false;
-
-  //   console.log("route: update article");
-  //   console.log(JSON.stringify(req.body));
-  //   console.log("request query: " + req.query.articles_id);
-  //   console.log("request params: " + req.params.id);
-
-  //   var id = (req.params.id) ? req.params.id : req.body.id;
-
-  //   db.Articles.update(
-  //     req.body,
-  //     {
-  //       where: {
-  //         article_id: id
-  //       }
-  //     }).then(function(dbResult) {
-  //       res.json(dbResult);
-  //   });
-  // });
-
-  // Story.
-  // findOne({ title: /casino royale/i }).
-  // populate('author', 'name'). // only return the Persons name
-  // exec(function (err, story) {
-  //   if (err) return handleError(err);
-
-  //   console.log('The author is %s', story.author.name);
-  //   // prints "The author is Ian Fleming"
-
-  //   console.log('The authors age is %s', story.author.age);
-  //   // prints "The authors age is null'
-  // });

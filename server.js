@@ -27,8 +27,6 @@ var path = require('path');
 var bodyParser = require("body-parser");
 var moment = require('moment');
 
-// var db = require("./models");
-
 ///////////////////////
 // configure Express
 ///////////////////////
@@ -73,7 +71,9 @@ var hbs = exphbs.create({
           return JSON.stringify(value);
       },
       readableDate: function(date) {
-        return moment(date).format('MM/DD/YYYY');
+        // return in utc to convert the date from the offset provided to UTC
+        // these dates have no timezone
+        return moment.utc(date).format('MM/DD/YYYY');
       }
   },
   defaultLayout: 'main'

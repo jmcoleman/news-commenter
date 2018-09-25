@@ -25,7 +25,7 @@ var ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  comment: [{
+  comments: [{
     type: Schema.Types.ObjectId,
     ref: 'ArticleComment'
     }]

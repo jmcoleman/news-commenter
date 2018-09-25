@@ -2,12 +2,12 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var ArticleCommentSchema = new Schema({
-    author: {
+    userName: {
         type: String,
         trim: true,
-        required: "Author is required."
+        required: "User is required."
     },
-    text: {
+    comment: {
         type: String,
         trim: true,
         required: "Comment text is required."
