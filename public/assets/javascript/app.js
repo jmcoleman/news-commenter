@@ -101,6 +101,35 @@ $(document).ready(function() {
                 // update the number of comments
                 var currentLength = $("#comment-length-" + id).text();
                 $("#comment-length-" + id).text(parseInt(currentLength) + 1);
+
+                ////////////////////////////
+                // add the new comment
+                ////////////////////////////
+                // var newCommentId = response.comments.length - 1;
+
+                // // article findoneand populate
+
+
+
+                // var divCommentItem = $("<div>");
+                // var spanName = $("<span>");
+                // var spanCommentText = $("<span>");
+
+                // divCommentItem.attr({"class": "comment-item m-2 p-2 rounded bg-light text-dark"});
+                // spanName.text(response.comments.userName);
+                // spanName.attr({"class": "comment-name text-info font-weight-bold px-1"});
+                // divCommentItem.append(spanName);
+                // divCommentItem.html("&nbsp;");
+                // spanCommentText.text(response.comments.comment);
+                // spanCommentText.attr({"class": "comment-text rounded p-2"});
+                // divCommentItem.append(spanCommentText);
+
+                // $("#comment-area-" + id).append(divCommentItem);
+
+                // <div class="comment-item m-2 p-2 rounded bg-light text-dark">
+                //     <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> <span class="comment-text rounded p-2">{{this.comment}}</span>
+                // </div>
+                
             });
         }
 

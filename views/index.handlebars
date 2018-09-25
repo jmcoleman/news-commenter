@@ -56,6 +56,13 @@
 
                         <!-- SAVE COMMENT -->
                         <div id="comments-{{_id}}" class="collapse">
+                            <div id="comment-area-{{_id}}">
+                                {{#each comments}}
+                                    <div class="comment-item m-2 p-2 rounded bg-light text-dark">
+                                        <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> <span class="comment-text rounded p-2">{{this.comment}}</span>
+                                    </div>
+                                {{/each}}
+                            </div>
                             <div class="formcontainer">
                                 <form id="form-save-comment-{{_id}}" class="form-save-comment">
                                     <div>
