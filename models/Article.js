@@ -1,6 +1,9 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+// Requiring our models
+var db = require("./../models");
+
 // Using the Schema constructor, create a new ArticleSchema object
 var ArticleSchema = new Schema({
   headline: {
@@ -29,7 +32,6 @@ var ArticleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'ArticleComment'
     }]
-
 });
 
 // This creates our model from the above schema, using mongoose's model method

@@ -13,7 +13,7 @@ var db = require("./../../../models");
 module.exports = function(app) {
 
   ///////////////////////////////////////////////////////////////////////////
-  // GET route for getting all of the articles (comments as array of ids)
+  // ARTICLE GET route - get all articles (comments as array of ids)
   ///////////////////////////////////////////////////////////////////////////
   app.get("/api/articlesX", function(req, res) {
 
@@ -39,7 +39,7 @@ module.exports = function(app) {
   });
 
   ///////////////////////////////////////////////////////////////////////////
-  // new GET route for getting all of the articles (comments as objects)
+  // ARTICLE GET route - get all articles (comments as objects)
   ///////////////////////////////////////////////////////////////////////////
   app.get("/api/articles", function(req, res) {
 
@@ -53,8 +53,8 @@ module.exports = function(app) {
       exec(function (err, dbResult) {
         if (err) return handleError(err);
         console.log(dbResult);
-        // console.log('The author is %s', dbResults[0].comments.userName);
-        // console.log('The comment is %s', dbResults[0].comments.comment);
+        // console.log('The author is %s', dbResult[0].comments.userName);
+        // console.log('The comment is %s', dbResult[0].comments.comment);
         // send to handlebars
         var hbsObject = {
           articles: dbResult
@@ -62,29 +62,12 @@ module.exports = function(app) {
         res.render("index", hbsObject);       
       });
 
-
-    //find all articles
-    // db.Article.find({})
-    //   .then(function(dbResult) {
-    //     // res.send(dbResult);
-
-    //     // send to handlebars
-    //     var hbsObject = {
-    //       articles: dbResult
-    //     };
-    //     res.render("index", hbsObject);       
-    //   })
-    //   .catch(function(err) {
-    //     // If an error occurs, log the error message
-    //     console.log(err.message);
-    //   });
-   
   });
 
   /////////////////////////////////////////////////////////////////////////////
-  // GET route for retrieving a single article (comments as array of ids)
+  // ARTICLE GET route - retrieve 1 article (comments as array of ids)
   /////////////////////////////////////////////////////////////////////////////
-  app.get("/api/articles/:id", function(req, res) {
+  app.get("/api/articlesX/:id", function(req, res) {
 
     console.log("route: specific article");
     // console.log(JSON.stringify(req.body));
@@ -102,8 +85,34 @@ module.exports = function(app) {
       });
   });
 
+  /////////////////////////////////////////////////////////////////////////////
+  // ARTICLE GET route - retrieve 1 article (comments as array of objects)
+  /////////////////////////////////////////////////////////////////////////////
+  app.get("/api/articles/:id", function(req, res) {
+
+    console.log("route: specific article");
+    // console.log(JSON.stringify(req.body));
+
+    // get article and associated comments
+    db.Article.
+      find({_id: req.params.id}).
+      populate('comments'). 
+      exec(function (err, dbResult) {
+        if (err) return handleError(err);
+        console.log(dbResult);
+        // console.log('The author is %s', dbResult[0].comments.userName);
+        // console.log('The comment is %s', dbResult[0].comments.comment);
+        // send to handlebars
+        var hbsObject = {
+          articles: dbResult
+        };
+        res.render("index", hbsObject);       
+      });
+    
+  });
+
   ///////////////////////////////////////////////////////////////////////////
-  // POST route for saving new article (when not saved as part of scrape)
+  // ARTICLE POST route - save new article (used when not done in scrape)
   ///////////////////////////////////////////////////////////////////////////
   app.post("/api/articles", function(req, res) {
 
@@ -135,25 +144,47 @@ module.exports = function(app) {
 
   });
 
-
   ///////////////////////////////////////////////////////////////////
-  // DELETE route for deleting a article (not currently accessed)
+  // ARTICLE DELETE route - delete an article
   ///////////////////////////////////////////////////////////////////
   app.delete("/api/articles/:id", function(req, res) {
 
     console.log("route: delete a article");
     console.log(JSON.stringify(req.body));
 
-    db.Article.findByIdAndRemove(req.params.id)
+    // remove the article
+    db.Article.findByIdAndRemove({ _id: req.params.id })
       .then(function(dbResult) {
         console.log("after the deletion of article: " + req.params.id);
-        res.json(dbResult);
+        console.log(dbResult);
+
+        db.ArticleComment.deleteMany({ _id: { $in: dbResult.comments} }, function(err) {
+          if (err) {
+            return res.status(500).send(err);
+          }
+
+          // create object to send back a message and the id of the document that was removed
+          const response = {
+            message: "Article successfully deleted",
+            id: dbResult._id,
+            headline: dbResult.headline,
+            comments: dbResult.comments
+          };
+
+          return res.status(200).send(response);
+        });
+
+        // res.json(dbResult);
+      })
+      .catch(function(err) {
+        // If an error occurs, log the error message
+        console.log(err.message);
       });
   });
 
-  ////////////////////////////////////////////////////////
-  // ** save a new comment and associate it to an article
-  ////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  // COMMENT POST route - save new comment and associate to an article
+  //////////////////////////////////////////////////////////////////////////////
   // Route for saving a new comment to the db and associating it with a article
   app.post("/comments/:id", function(req, res) {
 
@@ -177,48 +208,35 @@ module.exports = function(app) {
       });
   });
 
-//////////////////////////
+  ////////////////////////////////////////////////
+  // COMMENT DELETE route - delete a comment
+  ////////////////////////////////////////////////
+  app.delete("/comments/:id", function(req, res) {
 
-  //////////////////////////////////////////////////
-  // PUT route for updating (not used or tested)
-  //////////////////////////////////////////////////
-  app.put("/api/articles/:id", function(req, res) {
+    console.log("route: delete a comment");
+    console.log(JSON.stringify(req.body));
 
-    console.log("route: update article");
-    // console.log(JSON.stringify(req.body));
-    // console.log("request query: " + req.query.articles_id);
-    // console.log("request params: " + req.params.id);
+    // remove the article
+    db.ArticleComment.findByIdAndRemove({ _id: req.params.id })
+      .then(function(dbResult) {
+        console.log("after the deletion of comment: " + req.params.id);
+        console.log(dbResult);
 
-    var id = (req.params.id) ? req.params.id : req.body.id;
-    var comment = req.query.comment ? true : false;
-    
-    // update db here
-    db.Article.
-      findOne({ _id: id }).
-      populate('comments'). 
-      exec(function (err, article) {
-        if (err) return handleError(err);
-
-        console.log('The author is %s', article.comments.userName);
-        console.log('The comment is %s', article.comments.comment);
+        // create object to send back a message and the id of the document that was removed
+        const response = {
+          message: "Comment successfully deleted",
+          id: dbResult._id,
+          userName: dbResult.userName,
+          comment: dbResult.comment
+        };
+          
+          return res.status(200).send(response);
+      })
+      .catch(function(err) {
+        // If an error occurs, log the error message
+        console.log(err.message);
+        return res.status(500).send(err);
       });
-
-
-    });
-
-    // ///////////////////////////////
-    // // gets an articles comments
-    // ///////////////////////////////
-    // app.get("/api/articles/:id/comments", function(req, res) {
-
-    //   var id = (req.params.id) ? req.params.id : req.body.id;
-
-    //   db.Article.
-    //     findOne({ _id: id }).
-    //     populate({
-    //       path: 'comments',
-    //     });
-    
-    // });
+  });
 };
 

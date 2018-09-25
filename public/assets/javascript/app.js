@@ -74,8 +74,11 @@ $(document).ready(function() {
         if (btnElement.attr("id") === "btn-article-add-comment") {
                 
             console.log(JSON.stringify(this));
+
             // get the data-id attribute from button
             var id = $(document.activeElement).data("id");
+            var userName =  $("#form-save-comment-" + id + " [name=user_name]").val().trim();
+            var comment = $("#form-save-comment-" + id + " [name=comment]").val().trim();
 
             var objComment = {
                 userName: $("#form-save-comment-" + id + " [name=user_name]").val().trim(),
@@ -102,39 +105,18 @@ $(document).ready(function() {
                 var currentLength = $("#comment-length-" + id).text();
                 $("#comment-length-" + id).text(parseInt(currentLength) + 1);
 
-                ////////////////////////////
-                // add the new comment
-                ////////////////////////////
-                // var newCommentId = response.comments.length - 1;
+                ///////////////////////////////////////
+                // add the new comment to the page
+                ///////////////////////////////////////
+                $("#comment-area-" + id).append(
+                    "<div class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
+                        "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
+                    "</div>")
 
-                // // article findoneand populate
-
-
-
-                // var divCommentItem = $("<div>");
-                // var spanName = $("<span>");
-                // var spanCommentText = $("<span>");
-
-                // divCommentItem.attr({"class": "comment-item m-2 p-2 rounded bg-light text-dark"});
-                // spanName.text(response.comments.userName);
-                // spanName.attr({"class": "comment-name text-info font-weight-bold px-1"});
-                // divCommentItem.append(spanName);
-                // divCommentItem.html("&nbsp;");
-                // spanCommentText.text(response.comments.comment);
-                // spanCommentText.attr({"class": "comment-text rounded p-2"});
-                // divCommentItem.append(spanCommentText);
-
-                // $("#comment-area-" + id).append(divCommentItem);
-
-                // <div class="comment-item m-2 p-2 rounded bg-light text-dark">
-                //     <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> <span class="comment-text rounded p-2">{{this.comment}}</span>
-                // </div>
-                
             });
         }
 
     });
-
 
 
 });
@@ -147,7 +129,7 @@ $(document).ready(function() {
     //     var id = $(this).data("id");
 
     //     // Send the DELETE request.
-    //     $.ajax("/api/comments/" + id, {
+    //     $.ajax("/comments/" + id, {
     //         type: "DELETE"
     //     }).then(
     //     function() {
