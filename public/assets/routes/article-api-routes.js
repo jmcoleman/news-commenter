@@ -39,6 +39,27 @@ module.exports = function(app) {
    
   });
 
+  /////////////////////////////////////////////////////////////////////////////
+  // ARTICLE GET route - retrieve 1 article (comments as array of ids)
+  /////////////////////////////////////////////////////////////////////////////
+  app.get("/api/articlesX/:id", function(req, res) {
+
+    console.log("route: specific articleX");
+    // console.log(JSON.stringify(req.body));
+
+    db.Article.findById(req.params.id, function(err, article) {})
+      .then(function(dbResult) {
+        // res.send(dbResult);
+
+        // send to handlebars
+        var hbsArticle = {
+          articles: dbResult
+        };
+        // console.log(dbResult);
+        res.render("index", hbsArticle); 
+      });
+  });
+
   ///////////////////////////////////////////////////////////////////////////
   // ARTICLE GET route - get all articles (comments as objects)
   ///////////////////////////////////////////////////////////////////////////
@@ -65,27 +86,6 @@ module.exports = function(app) {
         res.render("index", hbsObject);       
       });
 
-  });
-
-  /////////////////////////////////////////////////////////////////////////////
-  // ARTICLE GET route - retrieve 1 article (comments as array of ids)
-  /////////////////////////////////////////////////////////////////////////////
-  app.get("/api/articlesX/:id", function(req, res) {
-
-    console.log("route: specific articleX");
-    // console.log(JSON.stringify(req.body));
-
-    db.Article.findById(req.params.id, function(err, article) {})
-      .then(function(dbResult) {
-        // res.send(dbResult);
-
-        // send to handlebars
-        var hbsArticle = {
-          articles: dbResult
-        };
-        // console.log(dbResult);
-        res.render("index", hbsArticle); 
-      });
   });
 
   /////////////////////////////////////////////////////////////////////////////

@@ -99,7 +99,7 @@ $(document).ready(function() {
 
                 // clear the form and collapse it
                 document.getElementById("form-save-comment-" + id).reset();
-                $('.collapse').collapse('hide');
+                // $('.collapse').collapse('hide');
 
                 // update the number of comments
                 var currentLength = $("#comment-length-" + id).text();
@@ -108,35 +108,64 @@ $(document).ready(function() {
                 ///////////////////////////////////////
                 // add the new comment to the page
                 ///////////////////////////////////////
-                $("#comment-area-" + id).append(
-                    "<div class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
-                        "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
-                    "</div>")
+                var element = $("#comment-area-" + id);
 
-            });
-        }
+                $("#comment-area-" + id).append(
+                    "<div id='comment-" + id + "' class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
+                        "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
+                        "<button id='btnComment-" + id + "' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" + id +
+                        "><i class='fa fa-times'></i></button>" +
+                    "</div>" 
+                    );
+                   
+                // $("#comment-area-" + id).on('click', ".delete-comment", handleCommentDelete);
+
+                // ***TODO: really don't want to reload the page but unless i do, the newly added comments can't be removed until a page refesh occurs.... so BUG
+                // location.reload();
+                
+            //});
+                }).then( function() {
+                    // how to add the on click even to the dynamically generated comment ??
+                    // $("#comment-area-" + id).on('click', ".delete-comment", handleCommentDelete);
+
+                });
+
+        }       // end if
 
     });
-
-
-});
-
 
     /////////////////////
     // delete the comment
     /////////////////////
-    // $(".delete-comment").on("click", function(event) {
-    //     var id = $(this).data("id");
+    var handleCommentDelete = function(event) {
+        var id = $(this).data("id");
 
-    //     // Send the DELETE request.
-    //     $.ajax("/comments/" + id, {
-    //         type: "DELETE"
-    //     }).then(
-    //     function() {
-    //         console.log("deleted comment", id);
+        // Send the DELETE request.
+        $.ajax("/comments/" + id, {
+            type: "DELETE"
+        }).then(
+        function() {
+            console.log("deleted comment", id);
             
-    //         // Reload the page to get the updated list
-    //         location.reload();
-    //     }
-    //     );
-    // });
+           
+            var element = document.getElementById("comment-" + id);
+            var articleId= element.parentNode.getAttribute("data-article-id");
+
+            // decrement the number of comments
+            var currentLength = $("#comment-length-" + articleId).text();
+            $("#comment-length-" + articleId).text(parseInt(currentLength) - 1);
+
+            // remove the comment
+            element.parentNode.removeChild(element);
+
+            // Reload the page to get the updated list
+            // location.reload();
+        }
+        );
+    }
+
+    // $(".delete-comment").on("click", handleCommentDelete);
+    $(".comment-area").on('click', ".delete-comment", handleCommentDelete);
+
+});
+

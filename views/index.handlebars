@@ -56,10 +56,15 @@
 
                         <!-- SAVE COMMENT -->
                         <div id="comments-{{_id}}" class="collapse">
-                            <div id="comment-area-{{_id}}">
+                            <div id="comment-area-{{_id}}" class="comment-area" data-article-id="{{_id}}">
                                 {{#each comments}}
-                                    <div class="comment-item m-2 p-2 rounded bg-light text-dark">
-                                        <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> <span class="comment-text rounded p-2">{{this.comment}}</span>
+                                    <div id="comment-{{this._id}}" class="comment-item m-2 p-2 rounded bg-light text-dark">
+                                        <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> 
+                                        <span class="comment-text rounded p-2">{{this.comment}}</span>
+                                        {{!-- <button class="delete-user btn btn-danger btn-circle ml-auto" data-id="{{this._id}}"> --}}
+                                                {{!-- <i class="delete-user text-danger fas fa-times-circle float-right" data-id="{{this._id}}" style="color:purple"></i> --}}
+                                            {{!-- </button> --}}
+                                        <button id="btnComment-{{this._id}} type="button" class="delete-comment btn btn-light btn-circle float-right" data-id={{this._id}}><i class="fa fa-times"></i></button>
                                     </div>
                                 {{/each}}
                             </div>

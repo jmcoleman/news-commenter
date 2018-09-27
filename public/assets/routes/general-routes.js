@@ -81,26 +81,26 @@ module.exports = function(app) {
             // push to Mongo DB
             ////////////////////////
 
-            console.log("route: scrape is creating article");
+            // console.log("route: scrape is creating article");
 
             // Save a new Example using the data object
-            db.Article.create({
-              headline: headline,
-              summary: summary.trim(),
-              urlLink: SMASHING_MAGAZINE_URL + urlLink,
-              author: author,
-              date: date
-            })
-            .then(function(savedData) {
-              // if saved successfully
-              // console.log(savedData);
+            // db.Article.create({
+            //   headline: headline,
+            //   summary: summary.trim(),
+            //   urlLink: SMASHING_MAGAZINE_URL + urlLink,
+            //   author: author,
+            //   date: date
+            // })
+            // .then(function(savedData) {
+            //   // if saved successfully
+            //   // console.log(savedData);
 
 
-            })
-            .catch(function(err) {
-              // If an error occurs, log the error message
-              console.log(err.message);
-            });
+            // })
+            // .catch(function(err) {
+            //   // If an error occurs, log the error message
+            //   console.log(err.message);
+            // });
            
           }
       });
@@ -129,38 +129,10 @@ module.exports = function(app) {
     // scrapes and returns articles
     scrapeSite(function(err,articleList) {
       console.log("returned results in");
-      // console.log(JSON.stringify(articleList));
+      console.log(JSON.stringify(articleList));
   
-// CURRENT LOGIC
-      // send to handlebars
-      // if (LOAD_FROM_SCRAPE) {
-      //   var hbsScrapeObject = {
-      //     articles: articleList,
-      //     isScraping: true
-      //   };
-      //   res.render("index", hbsScrapeObject);
-      // } else {
-      //   // get from MongoDB to render
-
-      //   //find all articles
-      //   db.Article.find({})
-      //   .then(function(dbResult) {
-      //     // send to handlebars
-      //     var hbsObject = {
-      //       articles: dbResult,
-      //       isScraping: true
-      //     };
-      //     res.render("index", hbsObject);       
-      //   })
-      //   .catch(function(err) {
-      //     // If an error occurs, log the error message
-      //     console.log(err.message);
-      //   });
-      // }
-
-// NEW LOGIC
-// for each item in the articlList, find it in Mongo and if it's not there, append it to a new array
-// save the new ones to mongo
+      // for each item in the articlList, find it in Mongo and if it's not there, append it to a new array
+      // save the new ones to mongo
       var newArticleList = [];
 
       articleList.forEach((item, index) => {
@@ -168,8 +140,7 @@ module.exports = function(app) {
           .then(function(dbResult){
             if (dbResult) {
               // if find it, don't add to new array
-              console.log("found it");
-
+              // console.log("found it");
             } else {
               // if don't find it, add it
               newArticleList.push(item);
