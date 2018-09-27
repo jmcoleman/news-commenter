@@ -52,11 +52,11 @@ SECRET_KEY=ENTER_SECRET_HERE
 
 ## Running tests
 
-Unit testing was done to TBD
+Unit testing was done to add articles via scraping, add new articles after scraping, add and remove comments.
 
 ## Deployment
 
-The project is deployed to Heroku pages at TBD
+The project is deployed to Heroku pages at https://news-commenter.herokuapp.com
 
 ## Built With
 
@@ -68,7 +68,7 @@ N/A
 
 ## Versioning
 
-This is version 0.1
+This is version 0.5
 
 ## Authors
 
