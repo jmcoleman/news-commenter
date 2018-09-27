@@ -228,7 +228,7 @@ module.exports = function(app) {
         // create object to send back a message and the id of the document that was removed
         const response = {
           message: "Comment successfully deleted",
-          id: dbResult._id,
+          id: req.params.id,
           userName: dbResult.userName,
           comment: dbResult.comment
         };
