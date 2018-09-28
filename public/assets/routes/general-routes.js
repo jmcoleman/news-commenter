@@ -131,19 +131,45 @@ module.exports = function(app) {
       console.log("returned results in");
       console.log(JSON.stringify(articleList));
   
-      // for each item in the articlList, find it in Mongo and if it's not there, append it to a new array
+      // for each item in the articleList, find it in Mongo and if it's not there, append it to a new array
       // save the new ones to mongo
       var newArticleList = [];
 
       articleList.forEach((item, index) => {
-        db.Article.find({headline: item.headline})
+        console.log("Finding: " + item.headline);
+
+        db.Article.find({headline: item.headline.trim()})
           .then(function(dbResult){
-            if (dbResult) {
-              // if find it, don't add to new array
-              // console.log("found it");
-            } else {
+            console.log(dbResult);
+
+            if (dbResult.length === 0) {
               // if don't find it, add it
+              console.log(item);
               newArticleList.push(item);
+
+            ////////////////////////
+            // push to Mongo DB
+            ////////////////////////
+
+            console.log("scrape is creating NEW article");
+
+            // Save a new Example using the data object
+            db.Article.create({
+              headline: item.headline,
+              summary: item.summary.trim(),
+              urlLink: SMASHING_MAGAZINE_URL + item.urlLink,
+              author: item.author,
+              date: item.date
+            })
+            .then(function(savedData) {
+              // if saved successfully
+              // console.log(savedData);
+            })
+            .catch(function(err) {
+              // If an error occurs, log the error message
+              console.log(err.message);
+            });
+
             }
 
           })
@@ -161,7 +187,6 @@ module.exports = function(app) {
       };
       res.render("index", hbsObject);   
     
-
       // END SCRAPESITE
     });
 
