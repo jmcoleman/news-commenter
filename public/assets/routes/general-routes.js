@@ -159,7 +159,7 @@ module.exports = function(app) {
             db.Article.create({
               headline: item.headline,
               summary: item.summary.trim(),
-              urlLink: SMASHING_MAGAZINE_URL + item.urlLink,
+              urlLink: item.urlLink,  // website url has aleady been appended at this point
               author: item.author,
               date: item.date
             })
