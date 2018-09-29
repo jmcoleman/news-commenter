@@ -105,8 +105,10 @@ module.exports = function(app) {
           }
       });
 
-      // Log the results once you've looped through each of the elements found with cheerio
+      // log the results once you've looped through each of the elements found with cheerio
       // console.log(results);
+
+      // call the callback function with the result data returned from the scrape
       callback(null, results);
     });
 
@@ -143,7 +145,7 @@ module.exports = function(app) {
             console.log(dbResult);
 
             if (dbResult.length === 0) {
-              // if don't find it, add it
+              // if don't find it, we'll need to add it
               console.log(item);
               newArticleList.push(item);
 
@@ -180,7 +182,7 @@ module.exports = function(app) {
 
       });
         
-      // send to handlebars
+      // send the new article list to handlebars
       var hbsObject = {
         articles: newArticleList,
         isScraping: true

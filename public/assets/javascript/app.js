@@ -13,6 +13,13 @@ $(document).ready(function() {
     //     $(this).addClass("active");
     //  });
 
+    ///////////////////
+    // Functions
+    ///////////////////
+    function isEmpty(val) {
+        return (val === undefined || val == null || val.length <= 0) ? true : false;
+    };
+
     ///////////////////////////////////////////////////////////////////////////
     // save the article to MongoDB (loading right after the scrape now)
     ///////////////////////////////////////////////////////////////////////////
@@ -80,47 +87,53 @@ $(document).ready(function() {
             var userName =  $("#form-save-comment-" + id + " [name=user_name]").val().trim();
             var comment = $("#form-save-comment-" + id + " [name=comment]").val().trim();
 
-            var objComment = {
-                userName: $("#form-save-comment-" + id + " [name=user_name]").val().trim(),
-                comment: $("#form-save-comment-" + id + " [name=comment]").val().trim()
-            };
+            if (isEmpty(userName) || isEmpty(comment)) {
+                // console.log("Fill out all fields.");
+                return false;
+            }  else {                               // form field checks
+                var objComment = {
+                    userName: userName,
+                    comment: comment
+                };
 
-            console.log(": update article comment");
-            console.log(objComment);
+                console.log(": update article comment");
+                console.log(objComment);
 
-            // Send the POST request.
-            $.ajax("/comments/" + id, {
-                type: "POST",
-                data: objComment
-            }).then(
-            function(response) {
-                console.log("updated article comment");
-                console.log("GOT IT: " + JSON.stringify(response));
+                // Send the POST request.
+                $.ajax("/comments/" + id, {
+                    type: "POST",
+                    data: objComment
+                }).then(
+                function(response) {
+                    console.log("updated article comment");
+                    console.log("GOT IT: " + JSON.stringify(response));
 
-                // clear the form and collapse it
-                document.getElementById("form-save-comment-" + id).reset();
-                // $('.collapse').collapse('hide');
+                    // clear the form and collapse it
+                    document.getElementById("form-save-comment-" + id).reset();
+                    // $('.collapse').collapse('hide');
 
-                // update the number of comments
-                var currentLength = $("#comment-length-" + id).text();
-                $("#comment-length-" + id).text(parseInt(currentLength) + 1);
+                    // update the number of comments
+                    var currentLength = $("#comment-length-" + id).text();
+                    $("#comment-length-" + id).text(parseInt(currentLength) + 1);
 
-                ///////////////////////////////////////
-                // add the new comment to the page
-                ///////////////////////////////////////
+                    ///////////////////////////////////////
+                    // add the new comment to the page
+                    ///////////////////////////////////////
 
-                // add button element
-                var element = $("#comment-area-" + id);
+                    // add button element
+                    var element = $("#comment-area-" + id);
 
-                $(element).append(
-                    "<div id='comment-" + response.comments[response.comments.length-1] + "' class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
-                        "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
-                        "<button id='btnComment-" + response.comments[response.comments.length-1] + "' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" + response.comments[response.comments.length-1] +
-                        "><i class='fa fa-times'></i></button>" +
-                    "</div>" 
-                    );
+                    $(element).append(
+                        "<div id='comment-" + response.comments[response.comments.length-1] + "' class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
+                            "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
+                            "<button id='btnComment-" + response.comments[response.comments.length-1] + "' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" + response.comments[response.comments.length-1] +
+                            "><i class='fa fa-times'></i></button>" +
+                        "</div>" 
+                        );
 
-            });
+                });
+            }
+
         } // end if
 
     });
