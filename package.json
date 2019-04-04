@@ -30,5 +30,6 @@
     "mongoose": "^5.2.15",
     "path": "^0.12.7",
     "request": "^2.88.0"
-  }
+  },
+  "devDependencies": {}
 }
