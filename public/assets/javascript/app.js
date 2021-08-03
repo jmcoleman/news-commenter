@@ -1,175 +1,187 @@
 $(document).ready(function() {
+	////////////////////////////////////////////
+	// make the selected nav bar item, active
+	////////////////////////////////////////////
+	// $( '#top-nav .navbar-nav a' ).on( 'click', function () {
+	//     $( '#top-nav .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
+	//     $(this).parent( 'li' ).addClass( 'active' );
+	// });
 
-    ////////////////////////////////////////////
-    // make the selected nav bar item, active
-    ////////////////////////////////////////////
-    // $( '#top-nav .navbar-nav a' ).on( 'click', function () {
-    //     $( '#top-nav .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
-    //     $(this).parent( 'li' ).addClass( 'active' );
-    // });
+	// $(".navbar-nav .nav-link").on("click", function(){
+	//     $(".navbar-nav").find(".active").removeClass("active");
+	//     $(this).addClass("active");
+	//  });
 
-    // $(".navbar-nav .nav-link").on("click", function(){
-    //     $(".navbar-nav").find(".active").removeClass("active");
-    //     $(this).addClass("active");
-    //  });
+	///////////////////
+	// Functions
+	///////////////////
+	function isEmpty(val) {
+		return val === undefined || val == null || val.length <= 0 ? true : false;
+	}
 
-    ///////////////////
-    // Functions
-    ///////////////////
-    function isEmpty(val) {
-        return (val === undefined || val == null || val.length <= 0) ? true : false;
-    };
+	///////////////////////////////////////////////////////////////////////////
+	// save the article to MongoDB (loading right after the scrape now)
+	///////////////////////////////////////////////////////////////////////////
+	// $(".form-save-article").on("submit", function(event) {
+	// 	// Make sure to preventDefault on a submit event.
+	// 	event.preventDefault();
 
-    ///////////////////////////////////////////////////////////////////////////
-    // save the article to MongoDB (loading right after the scrape now)
-    ///////////////////////////////////////////////////////////////////////////
-    $(".form-save-article").on("submit", function(event) {
+	// 	var btnElement = $(document.activeElement);
 
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
-        
-        var btnElement = $(document.activeElement);
+	// 	if (btnElement.attr("id") === "btn-article-save") {
+	// 		console.log(JSON.stringify(this));
+	// 		// get the data-id attribute from button
+	// 		var id = $(document.activeElement).data("id");
+	// 		console.log("Index is: " + id.toString());
 
-        if (btnElement.attr("id") === "btn-article-save") {
+	// 		var newArticle = {
+	// 			headline: $("#form-save-article-" + id + " [name=headline]")
+	// 				.val()
+	// 				.trim(),
+	// 			summary: $("#form-save-article-" + id + " [name=summary]")
+	// 				.val()
+	// 				.trim(),
+	// 			urlLink: $("#form-save-article-" + id + " [name=urlLink]")
+	// 				.val()
+	// 				.trim(),
+	// 			author: $("#form-save-article-" + id + " [name=author]")
+	// 				.val()
+	// 				.trim(),
+	// 			date: $("#form-save-article-" + id + " [name=date]")
+	// 				.val()
+	// 				.trim()
+	// 		};
 
-            console.log(JSON.stringify(this));
-            // get the data-id attribute from button
-            var id = $(document.activeElement).data("id");
-            console.log("Index is: " + id.toString());
+	// 		console.log("Ajax request: create article");
+	// 		console.log(newArticle);
 
-            var newArticle = {
-                headline: $("#form-save-article-" + id + " [name=headline]").val().trim(),
-                summary: $("#form-save-article-" + id + " [name=summary]").val().trim(),
-                urlLink: $("#form-save-article-" + id + " [name=urlLink]").val().trim(),
-                author: $("#form-save-article-" + id + " [name=author]").val().trim(),
-                date: $("#form-save-article-" + id + " [name=date]").val().trim()
-            };
+	// 		// Send the POST request.
+	// 		$.ajax("/api/articles", {
+	// 			type: "POST",
+	// 			data: newArticle
+	// 		}).then(function() {
+	// 			console.log("created new article");
 
-            console.log("Ajax request: create article");
-            console.log(newArticle);
+	// 			$(btnElement).attr("disabled", "disabled");
+	// 			$(btnElement).addClass("disabled", "disabled");
+	// 			$(btnElement).html(
+	// 				"<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned"
+	// 			);
 
-            // Send the POST request.
-            $.ajax("/api/articles", {
-                type: "POST",
-                data: newArticle
-            }).then(
-            function() {
-                console.log("created new article");
+	// 			// Reload the page
+	// 			// location.reload();
+	// 		});
+	// 	}
+	// });
 
-                $(btnElement).attr('disabled', 'disabled');
-                $(btnElement).addClass('disabled','disabled');
-                $(btnElement).html("<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned");
+	//////////////////////////////////
+	// add the comment to an article
+	//////////////////////////////////
+	$(".form-save-comment").on("submit", function(event) {
+		// Make sure to preventDefault on a submit event.
+		event.preventDefault();
 
-                // Reload the page
-                // location.reload();
-            });
+		console.log("in comment add ajax call");
 
-        }
-    });
- 
-    //////////////////////////////////
-    // add the comment to an article
-    //////////////////////////////////
-    $(".form-save-comment").on("submit", function(event) {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
-        
-        console.log("in comment add ajax call");
+		var btnElement = $(document.activeElement);
 
-        var btnElement = $(document.activeElement);
+		if (btnElement.attr("id") === "btn-article-add-comment") {
+			console.log(JSON.stringify(this));
 
-        if (btnElement.attr("id") === "btn-article-add-comment") {
-                
-            console.log(JSON.stringify(this));
+			// get the data-id attribute from button
+			var id = $(document.activeElement).data("id");
+			var userName = $("#form-save-comment-" + id + " [name=user_name]")
+				.val()
+				.trim();
+			var comment = $("#form-save-comment-" + id + " [name=comment]")
+				.val()
+				.trim();
 
-            // get the data-id attribute from button
-            var id = $(document.activeElement).data("id");
-            var userName =  $("#form-save-comment-" + id + " [name=user_name]").val().trim();
-            var comment = $("#form-save-comment-" + id + " [name=comment]").val().trim();
+			if (isEmpty(userName) || isEmpty(comment)) {
+				// console.log("Fill out all fields.");
+				return false;
+			} else {
+				// form field checks
+				var objComment = {
+					userName: userName,
+					comment: comment
+				};
 
-            if (isEmpty(userName) || isEmpty(comment)) {
-                // console.log("Fill out all fields.");
-                return false;
-            }  else {                               // form field checks
-                var objComment = {
-                    userName: userName,
-                    comment: comment
-                };
+				console.log(": update article comment");
+				console.log(objComment);
 
-                console.log(": update article comment");
-                console.log(objComment);
+				// Send the POST request.
+				$.ajax("/comments/" + id, {
+					type: "POST",
+					data: objComment
+				}).then(function(response) {
+					console.log("updated article comment");
+					console.log("GOT IT: " + JSON.stringify(response));
 
-                // Send the POST request.
-                $.ajax("/comments/" + id, {
-                    type: "POST",
-                    data: objComment
-                }).then(
-                function(response) {
-                    console.log("updated article comment");
-                    console.log("GOT IT: " + JSON.stringify(response));
+					// clear the form and collapse it
+					document.getElementById("form-save-comment-" + id).reset();
+					// $('.collapse').collapse('hide');
 
-                    // clear the form and collapse it
-                    document.getElementById("form-save-comment-" + id).reset();
-                    // $('.collapse').collapse('hide');
+					// update the number of comments
+					var currentLength = $("#comment-length-" + id).text();
+					$("#comment-length-" + id).text(parseInt(currentLength) + 1);
 
-                    // update the number of comments
-                    var currentLength = $("#comment-length-" + id).text();
-                    $("#comment-length-" + id).text(parseInt(currentLength) + 1);
+					///////////////////////////////////////
+					// add the new comment to the page
+					///////////////////////////////////////
 
-                    ///////////////////////////////////////
-                    // add the new comment to the page
-                    ///////////////////////////////////////
+					// add button element
+					var element = $("#comment-area-" + id);
 
-                    // add button element
-                    var element = $("#comment-area-" + id);
+					$(element).append(
+						"<div id='comment-" +
+							response.comments[response.comments.length - 1] +
+							"' class='comment-item m-2 p-2 rounded bg-light text-dark'>" +
+							"<span class='comment-name text-info font-weight-bold px-1'>" +
+							userName +
+							"</span>" +
+							"<span class='comment-text rounded p-2'>" +
+							comment +
+							"</span>" +
+							"<button id='btnComment-" +
+							response.comments[response.comments.length - 1] +
+							"' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" +
+							response.comments[response.comments.length - 1] +
+							"><i class='fa fa-times'></i></button>" +
+							"</div>"
+					);
+				});
+			}
+		} // end if
+	});
 
-                    $(element).append(
-                        "<div id='comment-" + response.comments[response.comments.length-1] + "' class='comment-item m-2 p-2 rounded bg-light text-dark'>" + 
-                            "<span class='comment-name text-info font-weight-bold px-1'>" + userName + "</span>" + "<span class='comment-text rounded p-2'>" + comment + "</span>" + 
-                            "<button id='btnComment-" + response.comments[response.comments.length-1] + "' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" + response.comments[response.comments.length-1] +
-                            "><i class='fa fa-times'></i></button>" +
-                        "</div>" 
-                        );
+	/////////////////////
+	// delete the comment
+	/////////////////////
+	var handleCommentDelete = function(event) {
+		// id is the article id here and not the comment id
+		var id = $(this).data("id");
 
-                });
-            }
+		// Send the DELETE request.
+		$.ajax("/comments/" + id, {
+			type: "DELETE"
+		}).then(function() {
+			console.log("deleted comment", id);
 
-        } // end if
+			var element = document.getElementById("comment-" + id);
+			var articleId = element.parentNode.getAttribute("data-article-id");
 
-    });
+			// decrement the number of comments
+			var currentLength = $("#comment-length-" + articleId).text();
+			$("#comment-length-" + articleId).text(parseInt(currentLength) - 1);
 
-    /////////////////////
-    // delete the comment
-    /////////////////////
-    var handleCommentDelete = function(event) {
-        // id is the article id here and not the comment id
-        var id = $(this).data("id");
+			// remove the comment
+			element.parentNode.removeChild(element);
 
-        // Send the DELETE request.
-        $.ajax("/comments/" + id, {
-            type: "DELETE"
-        }).then(
-        function() {
-            console.log("deleted comment", id);
-            
-           
-            var element = document.getElementById("comment-" + id);
-            var articleId= element.parentNode.getAttribute("data-article-id");
+			// Reload the page to get the updated list
+			// location.reload();
+		});
+	};
 
-            // decrement the number of comments
-            var currentLength = $("#comment-length-" + articleId).text();
-            $("#comment-length-" + articleId).text(parseInt(currentLength) - 1);
-
-            // remove the comment
-            element.parentNode.removeChild(element);
-
-            // Reload the page to get the updated list
-            // location.reload();
-        }
-        );
-    }
-
-    $(".comment-area").on('click', ".delete-comment", handleCommentDelete);
-
+	$(".comment-area").on("click", ".delete-comment", handleCommentDelete);
 });
-
