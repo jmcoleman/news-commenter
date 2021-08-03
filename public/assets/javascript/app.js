@@ -22,57 +22,57 @@ $(document).ready(function() {
 	///////////////////////////////////////////////////////////////////////////
 	// save the article to MongoDB (loading right after the scrape now)
 	///////////////////////////////////////////////////////////////////////////
-	$(".form-save-article").on("submit", function(event) {
-		// Make sure to preventDefault on a submit event.
-		event.preventDefault();
+	// $(".form-save-article").on("submit", function(event) {
+	// 	// Make sure to preventDefault on a submit event.
+	// 	event.preventDefault();
 
-		var btnElement = $(document.activeElement);
+	// 	var btnElement = $(document.activeElement);
 
-		if (btnElement.attr("id") === "btn-article-save") {
-			console.log(JSON.stringify(this));
-			// get the data-id attribute from button
-			var id = $(document.activeElement).data("id");
-			console.log("Index is: " + id.toString());
+	// 	if (btnElement.attr("id") === "btn-article-save") {
+	// 		console.log(JSON.stringify(this));
+	// 		// get the data-id attribute from button
+	// 		var id = $(document.activeElement).data("id");
+	// 		console.log("Index is: " + id.toString());
 
-			var newArticle = {
-				headline: $("#form-save-article-" + id + " [name=headline]")
-					.val()
-					.trim(),
-				summary: $("#form-save-article-" + id + " [name=summary]")
-					.val()
-					.trim(),
-				urlLink: $("#form-save-article-" + id + " [name=urlLink]")
-					.val()
-					.trim(),
-				author: $("#form-save-article-" + id + " [name=author]")
-					.val()
-					.trim(),
-				date: $("#form-save-article-" + id + " [name=date]")
-					.val()
-					.trim()
-			};
+	// 		var newArticle = {
+	// 			headline: $("#form-save-article-" + id + " [name=headline]")
+	// 				.val()
+	// 				.trim(),
+	// 			summary: $("#form-save-article-" + id + " [name=summary]")
+	// 				.val()
+	// 				.trim(),
+	// 			urlLink: $("#form-save-article-" + id + " [name=urlLink]")
+	// 				.val()
+	// 				.trim(),
+	// 			author: $("#form-save-article-" + id + " [name=author]")
+	// 				.val()
+	// 				.trim(),
+	// 			date: $("#form-save-article-" + id + " [name=date]")
+	// 				.val()
+	// 				.trim()
+	// 		};
 
-			console.log("Ajax request: create article");
-			console.log(newArticle);
+	// 		console.log("Ajax request: create article");
+	// 		console.log(newArticle);
 
-			// Send the POST request.
-			$.ajax("/api/articles", {
-				type: "POST",
-				data: newArticle
-			}).then(function() {
-				console.log("created new article");
+	// 		// Send the POST request.
+	// 		$.ajax("/api/articles", {
+	// 			type: "POST",
+	// 			data: newArticle
+	// 		}).then(function() {
+	// 			console.log("created new article");
 
-				$(btnElement).attr("disabled", "disabled");
-				$(btnElement).addClass("disabled", "disabled");
-				$(btnElement).html(
-					"<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned"
-				);
+	// 			$(btnElement).attr("disabled", "disabled");
+	// 			$(btnElement).addClass("disabled", "disabled");
+	// 			$(btnElement).html(
+	// 				"<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned"
+	// 			);
 
-				// Reload the page
-				// location.reload();
-			});
-		}
-	});
+	// 			// Reload the page
+	// 			// location.reload();
+	// 		});
+	// 	}
+	// });
 
 	//////////////////////////////////
 	// add the comment to an article
