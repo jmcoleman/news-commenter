@@ -29,7 +29,6 @@
     "handlebars-helpers": "^0.10.0",
     "moment": "^2.29.1",
     "mongoose": "^5.13.5",
-    "path": "^0.12.7",
-    "request": "^2.88.2"
+    "path": "^0.12.7"
   }
 }
