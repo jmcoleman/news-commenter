@@ -96,9 +96,40 @@ const deleteArticle = async (req, res, id) => {
 	}
 }
 
+// get all articles (comments as array of ids)
+const getArticlesX = async (req, res) => {
+	try {
+		//find all articles
+		const dbResult = await Article.find({}).lean()
+		// send to handlebars
+		var hbsObject = {
+			articles: dbResult,
+		}
+		res.render('index', hbsObject)
+	} catch (error) {
+		console.log(error.message)
+	}
+}
+
+// retrieve 1 article (comments as array of ids)
+const getArticleX = async (req, res, id) => {
+	try {
+		const dbResult = await Article.findById(id).lean()
+		// send to handlebars
+		var hbsArticle = {
+			articles: dbResult,
+		}
+		res.render('index', hbsArticle)
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 module.exports = {
 	getArticles,
 	getArticle,
 	createArticle,
 	deleteArticle,
+	getArticlesX,
+	getArticleX,
 }
