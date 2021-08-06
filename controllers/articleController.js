@@ -10,14 +10,14 @@ const getArticles = async (req, res) => {
 				if (err) return handleError(err)
 
 				// send to handlebars
-				let hbsObject = {
+				const hbsObject = {
 					articles: dbResult,
 				}
 				return res.render('index', hbsObject)
 			})
 	} catch (error) {
 		console.log(error)
-		return handleError(error)
+		return res.json(error)
 	}
 }
 
@@ -32,14 +32,14 @@ const getArticle = async (req, res, id) => {
 				if (err) return handleError(err)
 
 				// send to handlebars
-				var hbsObject = {
+				const hbsObject = {
 					articles: dbResult,
 				}
 				return res.render('index', hbsObject)
 			})
 	} catch (error) {
 		console.log(error)
-		return handleError(error)
+		return res.json(error)
 	}
 }
 
@@ -55,14 +55,14 @@ const createArticle = async (req, res) => {
 			date: req.body.date,
 		})
 
-		var hbsObject = {
+		const hbsObject = {
 			articles: newArticle,
 		}
 
 		return res.render('index', hbsObject)
 	} catch (error) {
 		console.log(error.message)
-		return handleError(error)
+		return res.json(error)
 	}
 }
 
@@ -92,7 +92,7 @@ const deleteArticle = async (req, res, id) => {
 		return res.status(200).send(response)
 	} catch (error) {
 		console.log(error.message)
-		return handleError(error)
+		return res.json(error)
 	}
 }
 
@@ -102,12 +102,13 @@ const getArticlesX = async (req, res) => {
 		//find all articles
 		const dbResult = await Article.find({}).lean()
 		// send to handlebars
-		var hbsObject = {
+		const hbsObject = {
 			articles: dbResult,
 		}
 		res.render('index', hbsObject)
 	} catch (error) {
 		console.log(error.message)
+		return res.json(error)
 	}
 }
 
@@ -122,6 +123,7 @@ const getArticleX = async (req, res, id) => {
 		res.render('index', hbsArticle)
 	} catch (error) {
 		console.log(error)
+		return res.json(error)
 	}
 }
 

@@ -1,4 +1,5 @@
 const ArticleComment = require('../models/ArticleComment')
+const Article = require('../models/Article')
 
 // save a new comment on an article
 const createComment = async (req, res, id) => {
@@ -11,14 +12,16 @@ const createComment = async (req, res, id) => {
 		// if a ArticleComment was created successfully, find the Article and push the new ArticleComment _id to the Articles `comments` array
 		// { new: true } tells the query that we want it to return the updated Article -- it returns the original by default
 		// since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-
 		if (newComment) {
 			const updatedArticle = await Article.findOneAndUpdate(
 				{ _id: article_id },
 				{ $push: { comments: newComment._id } },
 				{ new: true }
-			)
+			).lean()
+
 			// send the updated article back to the client
+			console.log('in createComment before returning')
+			console.log(JSON.stringify(updatedArticle))
 			return res.json(updatedArticle)
 		}
 	} catch (error) {

@@ -12,22 +12,17 @@ const SMASHING_MAGAZINE_URL = 'https://www.smashingmagazine.com'
 
 module.exports = function (router) {
 	// functions
-	const scrapeSite = async function (callback) {
-		console.log(
-			'\n***********************************\n' +
-				'Grabbing every article name and link\n' +
-				'from Smashing Magazines web site:' +
-				'\n***********************************\n'
-		)
-
+	async function getWebsiteContent() {
 		try {
+			// An empty array to save the data that we'll scrape
+			let results = []
+
+			// Make a request for articles from Smashing Magazines web site.
 			const axiosConfig = {
 				responseType: 'text',
 			}
-
-			// Making a request for articles from Smashing Magazines web site.
 			const axiosResponse = await axios(
-				`${SMASHING_MAGAZINE_URL}/articles/`,
+				`${SMASHING_MAGAZINE_URL}/articles`,
 				axiosConfig
 			)
 
@@ -35,14 +30,13 @@ module.exports = function (router) {
 			// '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
 			const $ = cheerio.load(axiosResponse.data, { ignoreWhitespace: true })
 
-			// An empty array to save the data that we'll scrape
-			let results = []
-
 			////////////////////////////////////////////////////////////////////////////////////////
 			// for each article
 			//   * Headline - the title of the article
 			//   * Summary - a short summary of the article
-			//   * URL - the url to the original article
+			//   * Author - the author of the article
+			//   * URL - the link with the url to the original article
+			//   * Date - the date of the article
 			//   * Feel free to add more content to your database (photos, bylines, and so on).
 			////////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,11 +44,11 @@ module.exports = function (router) {
 			// (i: iterator. element: the current element)
 			$('.article--post').each(function (i, element) {
 				// Save the text of the "article--post__title" class element in a "headline" variable
-				var headline = $(element).find('.article--post__title').text()
+				let headline = $(element).find('.article--post__title').text()
 
 				// In the currently selected element, look at its child elements (i.e., its p-tags with a class "article--post__teaser"),
 				// then filter for any text elements that are contents and save it to the "summary" variable
-				var summary = $(element)
+				let summary = $(element)
 					.find('p.article--post__teaser')
 					.first()
 					.contents()
@@ -63,18 +57,13 @@ module.exports = function (router) {
 					})
 					.text()
 
-				// console.log("Stuff: " + $(element).find("div.author__image").children("div").data('alt'));
-
 				// use cheerio to scrape the html and get the author, url and date of the article
-				var author = $(element)
-					.find('div.author__image')
-					.children('div')
-					.data('alt')
-				var urlLink = $(element)
+				let author = $(element).find('img.bio-image-image').attr('alt')
+				let urlLink = $(element)
 					.find('.article--post__title')
 					.children()
 					.attr('href')
-				var date = $(element)
+				let date = $(element)
 					.find('.article--post__teaser time')
 					.attr('datetime')
 
@@ -91,10 +80,11 @@ module.exports = function (router) {
 				}
 			})
 
-			// call the callback function with the result data returned from the scrape
-			callback(null, results)
+			// return the result data returned from the scrape
+			return results
 		} catch (error) {
 			console.error('scape from site failed: ', error)
+			return error
 		}
 	}
 
@@ -109,69 +99,74 @@ module.exports = function (router) {
 	})
 
 	// GET scrape route to retrieve articles
-	router.get('/scrape', function (req, res) {
+	router.get('/scrape', async function (req, res) {
 		console.log('route: in scrape articles')
 
-		// scrapes and returns articles
-		scrapeSite(function (err, articleList) {
-			console.log('returned results in')
-			console.log(JSON.stringify(articleList))
+		try {
+			// scrapes and returns articles
+			const articleList = await getWebsiteContent()
 
-			// for each item in the articleList, find it in Mongo and if it's not there, append it to a new array
+			// console.log('getWebsiteContent returned')
+			// console.log(JSON.stringify(articleList))
+
+			// for each article in the articleList, find it in Mongo and if it's not there, append it to a new array
 			// save the new ones to mongo
-			var newArticleList = []
+			let newArticleList = []
 
-			articleList.forEach((item, index) => {
-				console.log('Finding: ' + item.headline)
+			articleList.forEach(async (item, index) => {
+				// console.log('Looking in Mongo for: ' + item.headline)
 
-				db.Article.find({ headline: item.headline.trim() })
-					.then(function (dbResult) {
-						console.log(dbResult)
+				const dbResult = await db.Article.find({
+					headline: item.headline.trim(),
+				}).lean()
 
-						if (dbResult.length === 0) {
-							// if don't find it, we'll need to add it
-							console.log(item)
-							newArticleList.push(item)
+				if (dbResult.length === 0) {
+					// if don't find it, we'll need to add it
+					// console.log('did not find so add: ', item.headline)
 
-							////////////////////////
-							// push to Mongo DB
-							////////////////////////
+					////////////////////////
+					// push to Mongo DB
+					////////////////////////
+					// console.log('scrape is creating NEW article')
 
-							console.log('scrape is creating NEW article')
-
-							// Save a new Example using the data object
-							db.Article.create({
-								headline: item.headline,
-								summary: item.summary.trim(),
-								urlLink: item.urlLink, // website url has already been appended at this point
-								author: item.author,
-								date: item.date,
-							})
-								.then(function (savedData) {
-									// if saved successfully
-									// console.log(savedData);
-								})
-								.catch(function (err) {
-									// If an error occurs, log the error message
-									console.log(err.message)
-								})
-						}
+					const objArticle = new db.Article({
+						headline: item.headline,
+						summary: item.summary.trim(),
+						urlLink: item.urlLink, // website url has already been appended at this point
+						author: item.author,
+						date: item.date,
 					})
-					.catch(function (err) {
-						// If an error occurs, log the error message
-						console.log(err.message)
-					})
+					await objArticle.save()
+
+					// Save a new Example using the data object
+					// const savedData = await db.Article.create({
+					// 	headline: item.headline,
+					// 	summary: item.summary.trim(),
+					// 	urlLink: item.urlLink, // website url has already been appended at this point
+					// 	author: item.author,
+					// 	date: item.date,
+					// })
+
+					// console.log('AFTER SAVE A ARTICLE')
+					// console.log(objArticle)
+					// console.log(objArticle._id)
+
+					// newArticleList.push(savedData)
+					newArticleList.push({ ...item, _id: objArticle._id })
+				}
 			})
 
 			// send the new article list to handlebars
-			var hbsObject = {
+			const hbsObject = {
 				articles: newArticleList,
 				isScraping: true,
 			}
-			res.render('index', hbsObject)
-
-			// END SCRAPESITE
-		})
+			return res.render('index', hbsObject)
+		} catch (error) {
+			console.log(error)
+			return res.json(error)
+		}
+		// END SCRAPESITE
 	})
 
 	// GET clear all articles (and their associated comments) route

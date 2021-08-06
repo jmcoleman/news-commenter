@@ -28,7 +28,13 @@
                         <h6 class="text-muted">{{readableDate date}}</h6>
                         <hr>
                         <p class="card-text">{{summary}}</p>
-                        <p class="text-right"><small><span id="comment-length-{{_id}}">{{comments.length}}</span> Comments</small></p>
+                        <p class="text-right"><small><span id="comment-length-{{_id}}">
+                            {{#if comments.length}}
+                                {{comments.length}}
+                            {{else}}
+                                0
+                            {{/if}}
+                            </span> Comments</small></p>
 
                         <!-- SAVE NEW ARTICLE (that hasn't been saved to Mongo yet) -->
                         <div class="formcontainer">
@@ -41,27 +47,24 @@
                                 <input type="hidden" name="date" value="{{date}}" class="form-control">
                                 <div class="d-flex">
                                     <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
-                                    {{#isFalsey ../isScraping}}                                    
-                                        <button hidden id="btn-article-pin" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
-                                        <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-toggle="collapse" data-target="#comments-{{_id}}"><i class="far fa-comments pr-1"></i></button>
-                                    {{/isFalsey}}
-
-                                    {{!-- {{#isTruthy ../isScraping}} --}}
-                                    {{!-- {{/isTruthy}} --}}
-                                    {{!-- {{#isFalsey ../isScraping}} --}}
-                                    {{!-- {{/isFalsey}} --}}
+                                    <button hidden id="btn-article-pin" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
+                                    <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-toggle="collapse" data-target="#comments-{{_id}}" 
+                                    aria-expanded="false" aria-controls ="#comments-{{_id}}" ><i class="far fa-comments pr-1"></i></button>
+                                    {{!-- <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id="0" data-toggle="collapse" data-target="#comments-0" 
+                                    aria-expanded="false" aria-controls ="#comments-0" ><i class="far fa-comments pr-1"></i></button> --}}
                                 </div>
                             </form>
                         </div>
 
                         <!-- SAVE COMMENT -->
                         <div id="comments-{{_id}}" class="collapse">
+                        {{!-- <div id="comments-0" class="collapse"> --}}
                             <div id="comment-area-{{_id}}" class="comment-area" data-article-id="{{_id}}">
                                 {{#each comments}}
                                     <div id="comment-{{this._id}}" class="comment-item m-2 p-2 rounded bg-light text-dark">
                                         <span class="comment-name text-info font-weight-bold px-1">{{this.userName}}</span> 
                                         <span class="comment-text rounded p-2">{{this.comment}}</span>
-                                        <button id="btnComment-{{this._id}} type="button" class="delete-comment btn btn-light btn-circle float-right" data-id={{this._id}}><i class="fa fa-times"></i></button>
+                                        <button id="btnComment-{{this._id}}" type="button" class="delete-comment btn btn-light btn-circle float-right" data-id={{this._id}}><i class="fa fa-times"></i></button>
                                     </div>
                                 {{/each}}
                             </div>
