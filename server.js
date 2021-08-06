@@ -1,31 +1,43 @@
-const mongoose = require('mongoose')
-
-/////////////////////////////////////////////////////////
-// handle environment variables
-/////////////////////////////////////////////////////////
-
-// use dotenv to read .env vars into Node but silence the Heroku log error for production as no .env will exist
-require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
-
-// process.env.NODE_ENV is set by heroku with a default value of production
-if (process.env.NODE_ENV === 'production') {
-	console.log('in PROD')
-	// connect to the MongoDB on heroku using MONGODB_URI below
-} else {
-	console.log('in DEV')
-	// use the connection info from the .env file otherwise
-	// require("dotenv");
-}
-// console.log("process env: " + JSON.stringify(process.env,null,'\t'));
-
 //////////////////////////
 // dependencies
 //////////////////////////
+const mongoose = require('mongoose')
 const express = require('express')
 const session = require('express-session')
 const path = require('path')
-// const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
 const moment = require('moment')
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Environment Variables
+//
+// process.env.NODE_ENV is set by heroku with a default value of production
+// use dotenv to read .env vars into Node but silence the Heroku log error for production as no .env will exist
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// load env variables
+dotenv.config({ silent: process.env.NODE_ENV === 'production' })
+
+process.env.NODE_ENV === 'production'
+	? console.log('in PROD')
+	: console.log('in DEV')
+// console.log("process env: " + JSON.stringify(process.env,null,'\t'));
+
+/////////////////////////
+// connect to Mongo DB
+/////////////////////////
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+// connect to the MongoDB on heroku using MONGODB_URI below
+const MONGODB_URI =
+	process.env.MONGODB_URI || 'mongodb://localhost/mongoHeadlines'
+
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
+// mongoose.Promise = Promise
+mongoose.connect(MONGODB_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+})
 
 ///////////////////////
 // configure Express
@@ -44,22 +56,6 @@ app.use(express.json())
 // serve static folders
 app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/public/assets/img'))
-
-/////////////////////////
-// connect to Mongo DB
-/////////////////////////
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-const MONGODB_URI =
-	process.env.MONGODB_URI || 'mongodb://localhost/mongoHeadlines'
-
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// Connect to the Mongo DB
-mongoose.Promise = Promise
-mongoose.connect(MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-})
-mongoose.set('useCreateIndex', true)
 
 /////////////////
 // handlebars

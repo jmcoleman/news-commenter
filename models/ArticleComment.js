@@ -1,19 +1,19 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var ArticleCommentSchema = new Schema({
-    userName: {
-        type: String,
-        trim: true,
-        required: "User is required."
-    },
-    comment: {
-        type: String,
-        trim: true,
-        required: "Comment text is required."
-    }
-});
+const ArticleCommentSchema = new Schema({
+	userName: {
+		type: String,
+		trim: true,
+		required: 'User is required.',
+	},
+	comment: {
+		type: String,
+		trim: true,
+		required: 'Comment text is required.',
+	},
+})
 
-var ArticleComment = mongoose.model('ArticleComment', ArticleCommentSchema);
+const ArticleComment = mongoose.model('ArticleComment', ArticleCommentSchema)
 
-module.exports = ArticleComment;
+module.exports = ArticleComment
