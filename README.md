@@ -1,6 +1,6 @@
 # news-commenter
 
-News commenter is a web application that lets users view and leave comments on the latest news. The articles are captured by scraping the content from another site.
+News commenter is a web application that lets users view and leave comments on the recent articles. The articles are captured by scraping the content from another site.
 
 **Problem it solves:** \
 Provide a means for users to see the latest news and leave comments that are visible to others. \
@@ -19,25 +19,22 @@ Node, NPM and a command line tool such as GitBash.
 
 To get a development environment up and running, clone the repository locally.
 
-From the command line, execute the below to setup the project or by running 'npm init':
+From the command line, run 'npm init' to setup the project with the below dependencies or by running each of the below directly:
 
 ```
+$ npm install express
+$ npm install express-session
+$ npm install express-handlebars
+$ npm install handlebars-helpers
+$ npm install mongoose
+$ npm install cheerio
 
-$ npm install express --save
-$ npm install express-session --save
-$ npm install express-handlebars --save
-$ npm install handlebars-helpers --save
-$ npm install mongoose --save
-$ npm install cheerio --save
-
-$ npm install path --save
-$ npm install dotenv --save
-$ npm install moment --save
-
-
+$ npm install path
+$ npm install dotenv
+$ npm install moment
 ```
 
-Create an .env file at the root of the project and populate with any sensitive connection info and/or desired logging.
+Create an .env file at the root of the project and populate with the sensitive connection info and/or desired logging.
 
 ```
 # express session
@@ -51,11 +48,13 @@ SECRET_KEY=ENTER_SECRET_HERE
 
 ## Running tests
 
-Unit testing was done to add articles via scraping, add new articles after scraping, add and remove comments.
+N/A - No automated tests in place.
+
+Manual unit testing was done to add scraped articles, add new articles after scraping, add and remove comments.
 
 ## Deployment
 
-The project is deployed to Heroku pages at https://news-commenter.herokuapp.com
+The project is **no longer deployed** to Heroku pages at https://news-commenter.herokuapp.com
 
 ## Built With
 
@@ -67,11 +66,11 @@ N/A
 
 ## Versioning
 
-This is version 0.5
+This is version 1.0
 
 ## Authors
 
-- **Jenni Coleman** - _Initial development_
+- **Jenni Coleman** - _Development and Testing_
 
 ## License
 
