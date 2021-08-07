@@ -4,8 +4,8 @@ var router = express.Router()
 // =============================================================
 // Routes
 // =============================================================
-require('../routes/general-routes.js')(router)
-require('../routes/article-api-routes.js')(router)
-require('../routes/article-comment-routes.js')(router)
+router.use('/comments', require('../routes/article-comment-routes.js'))
+router.use('/api', require('../routes/article-routes.js'))
+router.use('/', require('../routes/general-routes.js'))
 
 module.exports = router

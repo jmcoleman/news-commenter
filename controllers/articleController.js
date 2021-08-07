@@ -16,7 +16,7 @@ const getArticles = async (req, res) => {
 				return res.render('index', hbsObject)
 			})
 	} catch (error) {
-		console.log(error)
+		console.error(error.message)
 		return res.json(error)
 	}
 }
@@ -38,7 +38,7 @@ const getArticle = async (req, res, id) => {
 				return res.render('index', hbsObject)
 			})
 	} catch (error) {
-		console.log(error)
+		console.error(error.message)
 		return res.json(error)
 	}
 }
@@ -61,7 +61,7 @@ const createArticle = async (req, res) => {
 
 		return res.render('index', hbsObject)
 	} catch (error) {
-		console.log(error.message)
+		console.error(error.message)
 		return res.json(error)
 	}
 }
@@ -91,7 +91,7 @@ const deleteArticle = async (req, res, id) => {
 
 		return res.status(200).send(response)
 	} catch (error) {
-		console.log(error.message)
+		console.error(error.message)
 		return res.json(error)
 	}
 }
@@ -107,7 +107,7 @@ const getArticlesX = async (req, res) => {
 		}
 		res.render('index', hbsObject)
 	} catch (error) {
-		console.log(error.message)
+		console.error(error.message)
 		return res.json(error)
 	}
 }
@@ -122,7 +122,7 @@ const getArticleX = async (req, res, id) => {
 		}
 		res.render('index', hbsArticle)
 	} catch (error) {
-		console.log(error)
+		console.error(error.message)
 		return res.json(error)
 	}
 }

@@ -16,10 +16,6 @@ const moment = require('moment')
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // load env variables
 dotenv.config({ silent: process.env.NODE_ENV === 'production' })
-
-process.env.NODE_ENV === 'production'
-	? console.log('in PROD')
-	: console.log('in DEV')
 // console.log("process env: " + JSON.stringify(process.env,null,'\t'));
 
 /////////////////////////
@@ -35,6 +31,7 @@ const MONGODB_URI =
 // mongoose.Promise = Promise
 mongoose.connect(MONGODB_URI, {
 	useNewUrlParser: true,
+	useFindAndModify: false,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
 })
@@ -45,8 +42,9 @@ mongoose.connect(MONGODB_URI, {
 const app = express()
 app.use(express.json())
 
-// sets the port info
+// sets the some express variables for info
 app.set('port', process.env.PORT || 8080)
+app.set('deployment', process.env.NODE_ENV || 'development') // will be set to production in Heroku
 
 // body parsing middleware
 app.use(express.urlencoded({ extended: true }))
@@ -66,6 +64,9 @@ const exphbs = require('express-handlebars')
 //and you can also define stuff like `defaultLayout` and `partialsDir`
 const hbs = exphbs.create({
 	helpers: {
+		defaultLayout: 'main',
+		layoutsDir: path.join(__dirname, '/views/layouts/'),
+		partialsDir: path.join(__dirname, '/views/partials/'),
 		sayHello: function () {
 			alert('Hello World')
 		},
@@ -78,7 +79,6 @@ const hbs = exphbs.create({
 			return moment.utc(date).format('MM/DD/YYYY')
 		},
 	},
-	defaultLayout: 'main',
 })
 
 // handlebar configuration
@@ -104,12 +104,13 @@ app.use(
 ////////////////////////////////////////////////////////
 // Import routes and give the server access to them.
 ////////////////////////////////////////////////////////
-const routes = require('./controllers/app_controller.js')
+const routes = require('./controllers/routeController.js')
 app.use(routes)
 
-// let apiRoutes = require('./routes/article-api-routes')
-// app.use('/api', apiRoutes)
-
 app.listen(app.get('port'), function () {
-	console.log('App now listening at localhost: ' + app.get('port'))
+	console.log(
+		`App now listening at localhost: ${app.get('port')} (${app.get(
+			'deployment'
+		)}) `
+	)
 })

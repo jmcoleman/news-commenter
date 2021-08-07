@@ -20,8 +20,7 @@ const createComment = async (req, res, id) => {
 			).lean()
 
 			// send the updated article back to the client
-			console.log('in createComment before returning')
-			console.log(JSON.stringify(updatedArticle))
+			// console.log(JSON.stringify(updatedArticle))
 			return res.json(updatedArticle)
 		}
 	} catch (error) {
@@ -33,6 +32,8 @@ const createComment = async (req, res, id) => {
 // delete a comment on an article
 const deleteComment = async (req, res, id) => {
 	try {
+		console.log('in deleteComment')
+
 		// remove the article comment
 		const commentRemoved = await ArticleComment.findByIdAndRemove({
 			_id: id,
@@ -48,7 +49,7 @@ const deleteComment = async (req, res, id) => {
 
 		return res.status(200).send(JSON.stringify(response))
 	} catch (error) {
-		console.log(error.message)
+		console.error(error.message)
 		return res.status(500).send(JSON.stringify(error))
 		// return handleError(error)
 	}

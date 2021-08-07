@@ -28,51 +28,6 @@ $(document).ready(function () {
 
 		var btnElement = $(document.activeElement)
 		return
-
-		// 	if (btnElement.attr('id') === 'btn-article-save') {
-		// 		console.log(JSON.stringify(this))
-		// 		// get the data-id attribute from button
-		// 		var id = $(document.activeElement).data('id')
-		// 		console.log('Index is: ' + id.toString())
-
-		// 		var newArticle = {
-		// 			headline: $('#form-save-article-' + id + ' [name=headline]')
-		// 				.val()
-		// 				.trim(),
-		// 			summary: $('#form-save-article-' + id + ' [name=summary]')
-		// 				.val()
-		// 				.trim(),
-		// 			urlLink: $('#form-save-article-' + id + ' [name=urlLink]')
-		// 				.val()
-		// 				.trim(),
-		// 			author: $('#form-save-article-' + id + ' [name=author]')
-		// 				.val()
-		// 				.trim(),
-		// 			date: $('#form-save-article-' + id + ' [name=date]')
-		// 				.val()
-		// 				.trim(),
-		// 		}
-
-		// 		console.log('Ajax request: create article')
-		// 		console.log(newArticle)
-
-		// 		// Send the POST request.
-		// 		$.ajax('/api/articles', {
-		// 			type: 'POST',
-		// 			data: newArticle,
-		// 		}).then(function () {
-		// 			console.log('created new article')
-
-		// 			$(btnElement).attr('disabled', 'disabled')
-		// 			$(btnElement).addClass('disabled', 'disabled')
-		// 			$(btnElement).html(
-		// 				"<i class='fas fa-thumbtack pr-1 fa-rotate-45'></i> Pinned"
-		// 			)
-
-		// 			// Reload the page
-		// 			// location.reload();
-		// 		})
-		// 	}
 	})
 
 	//////////////////////////////////
@@ -82,13 +37,9 @@ $(document).ready(function () {
 		// Make sure to preventDefault on a submit event.
 		event.preventDefault()
 
-		console.log('in comment add ajax call')
-
 		const btnElement = $(document.activeElement)
 
 		if (btnElement.attr('id') === 'btn-article-add-comment') {
-			// console.log(JSON.stringify(this))
-
 			// get the data-id attribute from button
 			const id = $(document.activeElement).data('id')
 			const userName = $('#form-save-comment-' + id + ' [name=user_name]')
@@ -99,7 +50,6 @@ $(document).ready(function () {
 				.trim()
 
 			if (isEmpty(userName) || isEmpty(comment)) {
-				// console.log("Fill out all fields.");
 				return false
 			} else {
 				// form field checks
@@ -108,9 +58,6 @@ $(document).ready(function () {
 					comment: comment,
 				}
 
-				// console.log(': update article comment')
-				// console.log(objComment)
-
 				// Send the POST request.
 				$.ajax('/comments/' + id, {
 					type: 'POST',
@@ -118,8 +65,7 @@ $(document).ready(function () {
 					dataType: 'json',
 					data: JSON.stringify(objComment),
 					success: function (response) {
-						console.log('updated article comment')
-						console.log('GOT IT: ' + JSON.stringify(response))
+						// console.log('GOT the updated comment: ' + JSON.stringify(response))
 
 						// clear the form and collapse it
 						document.getElementById('form-save-comment-' + id).reset()
@@ -162,7 +108,9 @@ $(document).ready(function () {
 	/////////////////////
 	// delete the comment
 	/////////////////////
-	const handleCommentDelete = function (event) {
+	function handleCommentDelete(event) {
+		console.log('in handleCommentDelete')
+
 		// id is the article id here and not the comment id
 		const id = $(this).data('id')
 
@@ -181,9 +129,6 @@ $(document).ready(function () {
 
 			// remove the comment
 			element.parentNode.removeChild(element)
-
-			// Reload the page to get the updated list
-			// location.reload();
 		})
 	}
 
