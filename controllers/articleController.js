@@ -161,9 +161,9 @@ const deleteArticle = async (req, res, id) => {
 
 		ArticleComment.deleteMany(
 			{ _id: { $in: articleRemoved.comments } },
-			function (err) {
-				if (err) {
-					return res.status(500).send(JSON.stringify(err))
+			function (error) {
+				if (error) {
+					return res.status(500).send(JSON.stringify(error))
 				}
 			}
 		)
@@ -220,8 +220,8 @@ const clearArticles = async (req, res) => {
 
 	try {
 		// clear all data
-		await ArticleComment.deleteMany({}, function (err) {})
-		await Article.deleteMany({}, function (err) {})
+		await ArticleComment.deleteMany({}, function (error) {})
+		await Article.deleteMany({}, function (error) {})
 
 		return res.redirect('/api/articles')
 	} catch (error) {
