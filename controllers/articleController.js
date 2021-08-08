@@ -87,7 +87,7 @@ const getArticles = async (req, res) => {
 		const articles = await Article.find({})
 			.lean()
 			.populate('comments')
-			.exec(function (err, dbResult) {
+			.exec(function (error, dbResult) {
 				if (error) {
 					console.error(error.message)
 					return res.json(error)
@@ -111,7 +111,7 @@ const getArticle = async (req, res, id) => {
 		const article = await Article.find({ _id: id })
 			.lean()
 			.populate('comments')
-			.exec(function (err, dbResult) {
+			.exec(function (error, dbResult) {
 				if (error) return
 				{
 					console.error(error.message)
