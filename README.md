@@ -54,7 +54,7 @@ Manual unit testing was done to add scraped articles, add new articles after scr
 
 ## Deployment
 
-The project is **no longer deployed** to Heroku pages at https://news-commenter.herokuapp.com
+The project is **deployed** to Heroku pages at https://news-commenter.herokuapp.com
 
 ## Built With
 

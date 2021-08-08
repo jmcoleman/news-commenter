@@ -88,8 +88,10 @@ const getArticles = async (req, res) => {
 			.lean()
 			.populate('comments')
 			.exec(function (err, dbResult) {
-				if (err) return handleError(err)
-
+				if (error) {
+					console.error(error.message)
+					return res.json(error)
+				}
 				// send to handlebars
 				const hbsObject = {
 					articles: dbResult,
@@ -110,7 +112,11 @@ const getArticle = async (req, res, id) => {
 			.lean()
 			.populate('comments')
 			.exec(function (err, dbResult) {
-				if (err) return handleError(err)
+				if (error) return
+				{
+					console.error(error.message)
+					return res.json(error)
+				}
 
 				// send to handlebars
 				const hbsObject = {

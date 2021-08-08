@@ -25,7 +25,6 @@ const createComment = async (req, res, id) => {
 		}
 	} catch (error) {
 		return res.json(error)
-		// return handleError(error)
 	}
 }
 
@@ -60,7 +59,6 @@ const deleteComment = async (req, res, articleId, id) => {
 	} catch (error) {
 		console.error(error.message)
 		return res.status(500).send(JSON.stringify(error))
-		// return handleError(error)
 	}
 }
 
