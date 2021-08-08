@@ -55,15 +55,12 @@
                                                     <button hidden id="btn-article-pin" class="btn btn-success mb-2 mx-1" data-id={{_id}}><i class="fas fa-thumbtack pr-1"></i> Pin It</button>
                                                     <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-toggle="collapse" data-target="#comments-{{_id}}" 
                                                     aria-expanded="false" aria-controls ="#comments-{{_id}}" ><i class="far fa-comments pr-1"></i></button>
-                                                    {{!-- <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id="0" data-toggle="collapse" data-target="#comments-0" 
-                                                    aria-expanded="false" aria-controls ="#comments-0" ><i class="far fa-comments pr-1"></i></button> --}}
                                                 </div>
                                             </form>
                                         </div>
 
                                         <!-- SAVE COMMENT -->
                                         <div id="comments-{{_id}}" class="collapse">
-                                        {{!-- <div id="comments-0" class="collapse"> --}}
                                             <div id="comment-area-{{_id}}" class="comment-area" data-article-id="{{_id}}">
                                                 {{#each comments}}
                                                     <div id="comment-{{this._id}}" class="comment-item m-2 p-2 rounded bg-light text-dark">

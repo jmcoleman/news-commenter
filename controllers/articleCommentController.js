@@ -7,7 +7,7 @@ const createComment = async (req, res, id) => {
 		// Create a new comment in the db
 		const newComment = await ArticleComment.create(req.body)
 
-		console.log('create comment: ', req.body)
+		// console.log('create comment: ', req.body)
 
 		// if a ArticleComment was created successfully, find the Article and push the new ArticleComment _id to the Articles `comments` array
 		// { new: true } tells the query that we want it to return the updated Article -- it returns the original by default

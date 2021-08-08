@@ -7,7 +7,7 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	// save the article to MongoDB (loading right after the scrape now)
+	// save the article to MongoDB (loads right after the scrape)
 	///////////////////////////////////////////////////////////////////////////
 	$('.form-save-article').on('submit', function (event) {
 		// Make sure to preventDefault on a submit event.
@@ -29,10 +29,6 @@ $(document).ready(function () {
 		if (btnElement.attr('id') === 'btn-article-add-comment') {
 			// get the data-id attribute from button
 			const id = $(document.activeElement).data('id')
-
-			// find the article id
-			// const element = document.getElementById('comment-' + id)
-			// const articleId = element.parentNode.getAttribute('data-article-id')
 
 			const userName = $('#form-save-comment-' + id + ' [name=user_name]')
 				.val()
@@ -62,7 +58,6 @@ $(document).ready(function () {
 
 						// clear the form and collapse it
 						document.getElementById('form-save-comment-' + id).reset()
-						// $('.collapse').collapse('hide');
 
 						// update the number of comments
 						const currentLength = $('#comment-length-' + id).text()

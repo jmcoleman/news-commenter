@@ -4,6 +4,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const session = require('express-session')
+const connectDB = require('./config/db')
 const path = require('path')
 const dotenv = require('dotenv')
 const moment = require('moment')
@@ -16,25 +17,19 @@ const moment = require('moment')
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // load env variables
 dotenv.config({ silent: process.env.NODE_ENV === 'production' })
-// console.log("process env: " + JSON.stringify(process.env,null,'\t'));
+// console.log('process env: ' + JSON.stringify(process.env, null, '\t'))
 
 /////////////////////////
 // connect to Mongo DB
 /////////////////////////
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+// If deployed, use the deployed database. Otherwise use the local database
 // connect to the MongoDB on heroku using MONGODB_URI below
 const MONGODB_URI =
-	process.env.MONGODB_URI || 'mongodb://localhost/mongoHeadlines'
+	process.env.MONGODB_URI ||
+	`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
 
-// Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
-// mongoose.Promise = Promise
-mongoose.connect(MONGODB_URI, {
-	useNewUrlParser: true,
-	useFindAndModify: false,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-})
+connectDB(MONGODB_URI)
 
 ///////////////////////
 // configure Express

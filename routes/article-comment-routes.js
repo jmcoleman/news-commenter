@@ -9,7 +9,7 @@ const {
 // @desc    Saves a new comment on an article
 // @route   POST /comments/:id
 router.post('/:id', (req, res) => {
-	console.log('ID IS:', req.params.id)
+	// console.log('ID IS:', req.params.id)
 	const newComment = createComment(
 		req,
 		res,
