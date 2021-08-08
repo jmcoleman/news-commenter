@@ -23,13 +23,11 @@ From the command line, run 'npm init' to setup the project with the below depend
 
 ```
 $ npm install express
-$ npm install express-session
 $ npm install express-handlebars
 $ npm install handlebars-helpers
 $ npm install mongoose
 $ npm install cheerio
 $ npm install axios
-
 $ npm install path
 $ npm install dotenv
 $ npm install moment
@@ -41,9 +39,6 @@ Create an .env file at the root of the project and populate with the sensitive c
 # Local Mongo DB
 DB_HOST="127.0.0.1"
 DB_NAME="newsDB"
-
-# express session
-SECRET_KEY=ENTER_SECRET_HERE
 
 # verbose logs
 #DEBUG=* node server.js

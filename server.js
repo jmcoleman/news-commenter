@@ -3,8 +3,6 @@
 //////////////////////////
 const mongoose = require('mongoose')
 const express = require('express')
-// const session = require('express-session')
-const session = require('cookie-session')
 const connectDB = require('./config/db')
 const path = require('path')
 const dotenv = require('dotenv')
@@ -88,18 +86,6 @@ app.set('view engine', 'handlebars')
 
 // more handlebars helpers
 require('handlebars-helpers')(['comparison'])
-
-/////////////////////
-// Express Session
-/////////////////////
-// console.log("secret: " +  process.env.SECRET_KEY);
-app.use(
-	session({
-		secret: process.env.SECRET_KEY, // put this in the heroku environment variables
-		saveUninitialized: true,
-		resave: true,
-	})
-)
 
 ////////////////////////////////////////////////////////
 // Import routes and give the server access to them.
