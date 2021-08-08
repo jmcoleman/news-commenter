@@ -27,8 +27,12 @@
 		"express-handlebars": "^5.3.3",
 		"express-session": "^1.17.2",
 		"handlebars-helpers": "^0.10.0",
+		"highlight.js": "^11.2.0",
 		"moment": "^2.29.1",
 		"mongoose": "^5.13.5",
 		"path": "^0.12.7"
+	},
+	"engines": {
+		"node": "14.x"
 	}
 }
