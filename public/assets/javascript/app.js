@@ -1,17 +1,4 @@
 $(document).ready(function () {
-	////////////////////////////////////////////
-	// make the selected nav bar item, active
-	////////////////////////////////////////////
-	// $( '#top-nav .navbar-nav a' ).on( 'click', function () {
-	//     $( '#top-nav .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
-	//     $(this).parent( 'li' ).addClass( 'active' );
-	// });
-
-	// $(".navbar-nav .nav-link").on("click", function(){
-	//     $(".navbar-nav").find(".active").removeClass("active");
-	//     $(this).addClass("active");
-	//  });
-
 	///////////////////
 	// Functions
 	///////////////////
@@ -42,6 +29,11 @@ $(document).ready(function () {
 		if (btnElement.attr('id') === 'btn-article-add-comment') {
 			// get the data-id attribute from button
 			const id = $(document.activeElement).data('id')
+
+			// find the article id
+			// const element = document.getElementById('comment-' + id)
+			// const articleId = element.parentNode.getAttribute('data-article-id')
+
 			const userName = $('#form-save-comment-' + id + ' [name=user_name]')
 				.val()
 				.trim()
@@ -54,6 +46,7 @@ $(document).ready(function () {
 			} else {
 				// form field checks
 				const objComment = {
+					articleId: id,
 					userName: userName,
 					comment: comment,
 				}
@@ -113,15 +106,17 @@ $(document).ready(function () {
 
 		// id is the article id here and not the comment id
 		const id = $(this).data('id')
+		const element = document.getElementById('comment-' + id)
+		const articleId = element.parentNode.getAttribute('data-article-id')
+
+		console.log('handleCommentDelete id: ', id)
+		console.log('handleCommentDelete articleId: ', articleId)
 
 		// Send the DELETE request.
-		$.ajax('/comments/' + id, {
+		$.ajax('/comments/' + articleId + '/' + id, {
 			type: 'DELETE',
 		}).then(function () {
 			console.log('deleted comment', id)
-
-			const element = document.getElementById('comment-' + id)
-			const articleId = element.parentNode.getAttribute('data-article-id')
 
 			// decrement the number of comments
 			const currentLength = $('#comment-length-' + articleId).text()

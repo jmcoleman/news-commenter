@@ -2,15 +2,23 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ArticleCommentSchema = new Schema({
+	articleId: {
+		type: Schema.Types.ObjectId,
+		ref: 'Article',
+	},
 	userName: {
 		type: String,
 		trim: true,
-		required: 'User is required.',
+		required: true,
 	},
 	comment: {
 		type: String,
 		trim: true,
-		required: 'Comment text is required.',
+		required: true,
+	},
+	createDate: {
+		type: Date,
+		default: Date.now,
 	},
 })
 

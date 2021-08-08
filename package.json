@@ -1,34 +1,34 @@
 {
-  "name": "news-commenter",
-  "version": "1.0.0",
-  "description": "Web app that lets users view and leave comments on the latest news",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jmcoleman/news-commenter.git"
-  },
-  "author": "Jenni Coleman",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jmcoleman/news-commenter/issues"
-  },
-  "homepage": "https://github.com/jmcoleman/news-commenter#readme",
-  "keywords": [],
-  "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.10",
-    "dotenv": "^10.0.0",
-    "encoding": "^0.1.13",
-    "express": "^4.17.1",
-    "express-handlebars": "^5.3.3",
-    "express-session": "^1.17.2",
-    "handlebars-helpers": "^0.10.0",
-    "moment": "^2.29.1",
-    "mongoose": "^5.13.5",
-    "path": "^0.12.7"
-  }
+	"name": "news-commenter",
+	"version": "1.0.0",
+	"description": "Web app that lets users view and leave comments on the latest news",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jmcoleman/news-commenter.git"
+	},
+	"author": "Jenni Coleman",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/jmcoleman/news-commenter/issues"
+	},
+	"homepage": "https://github.com/jmcoleman/news-commenter#readme",
+	"keywords": [],
+	"dependencies": {
+		"axios": "^0.21.1",
+		"cheerio": "^1.0.0-rc.10",
+		"dotenv": "^10.0.0",
+		"encoding": "^0.1.13",
+		"express": "^4.17.1",
+		"express-handlebars": "^5.3.3",
+		"express-session": "^1.17.2",
+		"handlebars-helpers": "^0.10.0",
+		"moment": "^2.29.1",
+		"mongoose": "^5.13.5",
+		"path": "^0.12.7"
+	}
 }

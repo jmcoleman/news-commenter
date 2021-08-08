@@ -19,6 +19,8 @@ router.post('/:id', (req, res) => {
 
 // @desc    Deletes a comment on an article
 // @route   DELETE /comments/:id
-router.delete('/:id', (req, res) => deleteComment(req, res, req.params.id))
+router.delete('/:articleId/:id', (req, res) =>
+	deleteComment(req, res, req.params.articleId, req.params.id)
+)
 
 module.exports = router

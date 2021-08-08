@@ -7,12 +7,12 @@ const ArticleSchema = new Schema({
 		type: String,
 		trim: true,
 		unique: true,
-		required: 'Article name is required',
+		required: true,
 	},
 	summary: {
 		type: String,
 		trim: true,
-		required: 'Summary is required',
+		required: true,
 	},
 	urlLink: {
 		type: String,
@@ -21,7 +21,7 @@ const ArticleSchema = new Schema({
 	author: {
 		type: String,
 	},
-	date: {
+	createDate: {
 		type: Date,
 		default: Date.now,
 	},
