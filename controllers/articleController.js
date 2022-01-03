@@ -220,8 +220,8 @@ const clearArticles = async (req, res) => {
 
 	try {
 		// clear all data
-		await ArticleComment.deleteMany({}, function (error) {})
-		await Article.deleteMany({}, function (error) {})
+		await ArticleComment.deleteMany({})
+		await Article.deleteMany({})
 
 		return res.redirect('/api/articles')
 	} catch (error) {

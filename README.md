@@ -5,7 +5,7 @@ News commenter is a web application that lets users view and leave comments on t
 **Problem it solves:** \
 Provide a means for users to see the latest news and leave comments that are visible to others on the site. \
 **How solved:** \
-Scrape current news articles from a news site and present that such that comments can be entered and persisted to a data store. \
+Scrape current news articles from a news site and present that such that comments can be entered and persisted to a data store or cleared. \
 **Technical approach:** \
 Use cheerio to scrape content from a news site. Store the results in MongoDB using Mongoose. Allow users to view the articles and comment on them. Persist the comments to MongoDB.
 
