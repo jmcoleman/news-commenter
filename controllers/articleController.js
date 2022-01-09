@@ -6,8 +6,6 @@ const SMASHING_MAGAZINE_URL = 'https://www.smashingmagazine.com'
 
 // get data from Smashing Magazines articles and return the data
 const getScrapedContent = async () => {
-	console.log('in getScrapedContent')
-
 	try {
 		// An empty array to save the data that we'll scrape
 		let results = []
@@ -112,8 +110,7 @@ const getArticle = async (req, res, id) => {
 			.lean()
 			.populate('comments')
 			.exec(function (error, dbResult) {
-				if (error) return
-				{
+				if (error) {
 					console.error(error.message)
 					return res.json(error)
 				}
@@ -216,14 +213,17 @@ const getArticleX = async (req, res, id) => {
 
 // clear the articles from the store
 const clearArticles = async (req, res) => {
-	console.log('in clear all articles')
-
 	try {
 		// clear all data
 		await ArticleComment.deleteMany({})
 		await Article.deleteMany({})
 
-		return res.redirect('/api/articles')
+		const hbsObject = {
+			articles: null,
+			isScraping: false,
+			isClearing: true,
+		}
+		return res.render('index', hbsObject)
 	} catch (error) {
 		console.error(error.message)
 		return res.json(error)
@@ -232,8 +232,6 @@ const clearArticles = async (req, res) => {
 
 // save the scraped data to the store
 const scrapeArticles = async (req, res) => {
-	console.log('in save of scraped articles')
-
 	try {
 		// scrapes and returns articles
 		const articleList = await getScrapedContent()

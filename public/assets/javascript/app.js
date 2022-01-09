@@ -1,41 +1,23 @@
-$(document).ready(function () {
-	///////////////////
-	// Functions
-	///////////////////
-	function isEmpty(val) {
-		return val === undefined || val == null || val.length <= 0 ? true : false
-	}
+////////////////////////
+// event handlers
+////////////////////////
 
-	///////////////////////////////////////////////////////////////////////////
-	// save the article to MongoDB (loads right after the scrape)
-	///////////////////////////////////////////////////////////////////////////
-	$('.form-save-article').on('submit', function (event) {
-		// Make sure to preventDefault on a submit event.
-		event.preventDefault()
+// add a comment to an article
+function handleCommentFormSubmit(e) {
+	e.preventDefault()
 
-		var btnElement = $(document.activeElement)
-		return
-	})
+	if (e.target.classList.contains('form-save-comment')) {
+		const btnElement = document.activeElement
 
-	//////////////////////////////////
-	// add the comment to an article
-	//////////////////////////////////
-	$('.form-save-comment').on('submit', function (event) {
-		// Make sure to preventDefault on a submit event.
-		event.preventDefault()
+		if (btnElement.getAttribute('id') === 'btn-article-add-comment') {
+			const id = btnElement.getAttribute('data-id')
 
-		const btnElement = $(document.activeElement)
-
-		if (btnElement.attr('id') === 'btn-article-add-comment') {
-			// get the data-id attribute from button
-			const id = $(document.activeElement).data('id')
-
-			const userName = $('#form-save-comment-' + id + ' [name=user_name]')
-				.val()
-				.trim()
-			const comment = $('#form-save-comment-' + id + ' [name=comment]')
-				.val()
-				.trim()
+			const userName = document
+				.querySelector(`#form-save-comment-${id} [name=user_name]`)
+				.value.trim()
+			const comment = document
+				.querySelector(`#form-save-comment-${id} [name=comment]`)
+				.value.trim()
 
 			if (isEmpty(userName) || isEmpty(comment)) {
 				return false
@@ -48,79 +30,156 @@ $(document).ready(function () {
 				}
 
 				// Send the POST request.
-				$.ajax('/comments/' + id, {
-					type: 'POST',
-					contentType: 'application/json',
-					dataType: 'json',
-					data: JSON.stringify(objComment),
-					success: function (response) {
-						// console.log('GOT the updated comment: ' + JSON.stringify(response))
-
-						// clear the form and collapse it
+				fetch(`/comments/${id}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(objComment),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						// clear the form
 						document.getElementById('form-save-comment-' + id).reset()
 
-						// update the number of comments
-						const currentLength = $('#comment-length-' + id).text()
-						$('#comment-length-' + id).text(parseInt(currentLength) + 1)
-
-						///////////////////////////////////////
-						// add the new comment to the page
-						///////////////////////////////////////
-
-						// add button element
-						const element = $('#comment-area-' + id)
-
-						$(element).append(
-							"<div id='comment-" +
-								response.comments[response.comments.length - 1] +
-								"' class='comment-item m-2 p-2 rounded bg-light text-dark'>" +
-								"<span class='comment-name text-info font-weight-bold px-1'>" +
-								userName +
-								'</span>' +
-								"<span class='comment-text rounded p-2'>" +
-								comment +
-								'</span>' +
-								"<button id='btnComment-" +
-								response.comments[response.comments.length - 1] +
-								"' type='button' class='delete-comment btn btn-light btn-circle float-right' data-id=" +
-								response.comments[response.comments.length - 1] +
-								"><i class='fa fa-times'></i></button>" +
-								'</div>'
+						// increment the number of comments
+						const commentLengthEl = document.querySelector(
+							`#comment-length-${id}`
 						)
-					},
-				})
+						commentLengthEl.innerText = parseInt(commentLengthEl.innerText) + 1
+
+						// add the new comment to the page
+						const element = document.querySelector(`#comment-area-${id}`)
+						element.innerHTML += `<div id='comment-${
+							data.comments[data.comments.length - 1]
+						}' class='comment-item m-2 p-2 rounded bg-light text-dark d-flex'> 
+							 <span class='comment-name text-info font-weight-bold px-1'>${userName}</span>
+							 <span class='comment-text rounded px-2 flex-grow-1'>${comment}</span>
+							 <button id='btnComment-${
+									data.comments[data.comments.length - 1]
+								}' type='button' class='delete-comment btn btn-light btn-adjust py-0' data-id=${
+							data.comments[data.comments.length - 1]
+						}><i class='fa fa-times'></i></button>
+							</div>`
+
+						// get the collapsing element so we can resize after new element is added
+						const collapsingEl = btnElement
+							.closest('.card-body')
+							.querySelector('.collapse')
+
+						// resize
+						forceMasonryToResize(collapsingEl)
+
+						// set the focus
+						btnElement
+							.closest('.card-body')
+							.querySelector('#comment_update')
+							.focus()
+					})
+					.catch((error) => {
+						console.error('Error:', error)
+					})
 			}
 		} // end if
-	})
+	}
+}
 
-	/////////////////////
-	// delete the comment
-	/////////////////////
-	function handleCommentDelete(event) {
-		console.log('in handleCommentDelete')
+// handle clicked events on articles
+function handleArticlesClick(e) {
+	// e.preventDefault()
 
-		// id is the article id here and not the comment id
-		const id = $(this).data('id')
-		const element = document.getElementById('comment-' + id)
+	// DELETE COMMENT from an article
+	if (e.target && e.target.parentNode.classList.contains('delete-comment')) {
+		const commentId = e.target.parentNode.getAttribute('data-id')
+		const element = document.getElementById('comment-' + commentId)
 		const articleId = element.parentNode.getAttribute('data-article-id')
 
-		console.log('handleCommentDelete id: ', id)
-		console.log('handleCommentDelete articleId: ', articleId)
-
 		// Send the DELETE request.
-		$.ajax('/comments/' + articleId + '/' + id, {
-			type: 'DELETE',
+		fetch(`/comments/${articleId}/${commentId}`, {
+			method: 'DELETE',
 		}).then(function () {
-			console.log('deleted comment', id)
+			// get the current number of comments
+			const commentLengthEl = document.querySelector(
+				`#comment-length-${articleId}`
+			)
 
-			// decrement the number of comments
-			const currentLength = $('#comment-length-' + articleId).text()
-			$('#comment-length-' + articleId).text(parseInt(currentLength) - 1)
+			// set the decremented count
+			commentLengthEl.innerText = parseInt(commentLengthEl.innerText) - 1
 
 			// remove the comment
 			element.parentNode.removeChild(element)
+
+			// get the collapsing element so we can resize because a comment has been deleted
+			const collapsingEl = commentLengthEl
+				.closest('.card-body')
+				.querySelector('.collapse')
+
+			//resize
+			forceMasonryToResize(collapsingEl)
+
+			// set the focus
+			commentLengthEl
+				.closest('.card-body')
+				.querySelector('#comment_update')
+				.focus()
 		})
 	}
+}
 
-	$('.comment-area').on('click', '.delete-comment', handleCommentDelete)
-})
+// once the DOM loads, initialize
+function handleAppLoad() {
+	const articlesEl = document.querySelector('#articles')
+
+	if (articlesEl !== null) {
+		document.addEventListener('submit', handleCommentFormSubmit)
+
+		articlesEl.addEventListener('click', handleArticlesClick)
+
+		// e.target is the element being for the bootstrap shown and hidden events collapse
+		articlesEl.addEventListener('shown.bs.collapse', (e) => {
+			forceMasonryToResize(e.target)
+		})
+		articlesEl.addEventListener('hidden.bs.collapse', (e) => {
+			forceMasonryToResize(e.target)
+		})
+	}
+}
+
+////////////////////////
+// functions
+////////////////////////
+
+// check for empty, null or undefined
+function isEmpty(val) {
+	return val === undefined || val == null || val.length <= 0 ? true : false
+}
+
+function forceMasonryToResize(el) {
+	void el.offsetHeight
+	msnry.layout()
+}
+
+////////////////////////
+// app load
+////////////////////////
+
+let msnry = null
+
+if (document.getElementById('articles')) {
+	// Masonry layout
+	// --> html equivalent is on .row with data-masonry='{"percentPosition": true,"itemSelector": ".col" }'
+	let masonryContainer = '#articles.row'
+	let masonryItem = '.col'
+	msnry = new Masonry(masonryContainer, {
+		itemSelector: masonryItem,
+		percentPosition: true,
+	})
+}
+
+if (document.readyState == 'loading') {
+	// still loading, wait for the event
+	document.addEventListener('DOMContentLoaded', handleAppLoad)
+} else {
+	// DOM is ready!
+	handleAppLoad()
+}

@@ -1,57 +1,54 @@
+*,
+*:before,
+*:after {
+	box-sizing: border-box !important;
+}
+
 html {
 	min-height: 100%;
 }
 
 body {
-	margin-bottom: 0px;
 	background-color: #f0f0f0;
-	display: flex;
-	flex-direction: column;
 	min-height: 100vh;
 }
 
-/*******************
-  ** general styling
-  ********************/
+textarea:focus,
+input:focus,
+button:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
 #page-header {
-	height: 200px;
-	background: url("../images/image1.jpg");
+	min-height: fit-content;
+	background: url('../images/image1.jpg');
 	background-position: 0 -360px;
 	background-attachment: fixed;
-	color: #fff;
 	border-bottom: 1px #eee solid;
-	padding-top: 50px;
 }
 
 /* rotate icon by 45 degrees */
 .fa-rotate-45 {
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
 
-.btn-circle {
+.btn-adjust {
 	width: 30px;
 	height: 30px;
-	padding: 6px 0px;
-	border-radius: 15px;
-	text-align: center;
 	font-size: 12px;
-	line-height: 1.42857;
+}
+
+.btn-adjust:hover {
+	background-color: transparent;
+}
+
+.delete-comment.btn-adjust {
+	margin-top: -5px;
 }
 
 #article-content {
 	flex: 1;
-}
-
-/*******************
-  ** footer
-  ********************/
-#main-footer {
-	background: #000;
-	color: #fff;
 }
 
 @media (max-width: 768px) {
@@ -59,5 +56,4 @@ body {
 		margin-left: 0;
 		margin-top: 4px;
 	}
-
 }
