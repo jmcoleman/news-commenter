@@ -23,8 +23,8 @@ dotenv.config({ silent: process.env.NODE_ENV === 'production' })
 /////////////////////////
 // If deployed, use the deployed database. Otherwise use the local database
 // connect to the MongoDB on heroku using MONGODB_URI below
-// let MONGODB_URI =
-// process.env.MONGODB_URI ||
+let MONGODB_URI = process.env.MONGODB_URI
+//||
 // `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
 
 // override to run Mongo Atlas in dev -- COMMENT OUT FOR DEPLOYMENT (unless dev testing to Atlas)
