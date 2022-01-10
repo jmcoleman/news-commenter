@@ -29,7 +29,7 @@ dotenv.config({ silent: process.env.NODE_ENV === 'production' })
 
 // override to run Mongo Atlas in dev -- COMMENT OUT FOR DEPLOYMENT (unless dev testing to Atlas)
 // MONGODB_URI = `mongodb+srv://${process.env.DB_USER_ATLAS}:${process.env.DB_PASSWORD_ATLAS}@${process.env.DB_CLUSTER_ATLAS}/${process.env.DB_NAME_ATLAS}?retryWrites=true&w=majority`
-console.log(process.env.MONGODB_URI)
+// console.log(MONGODB_URI)
 
 // Connect to the Mongo DB
 connectDB(MONGODB_URI)
