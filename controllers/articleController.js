@@ -255,9 +255,9 @@ const scrapeArticles = async (req, res) => {
 					author: item.author,
 					date: item.date,
 				})
-				await objArticle.save()
-
-				newArticleList.push({ ...item, _id: objArticle._id })
+				await objArticle.save(function () {
+					newArticleList.push({ ...item, _id: objArticle._id })
+				})
 			}
 		})
 
@@ -265,6 +265,7 @@ const scrapeArticles = async (req, res) => {
 		const hbsObject = {
 			articles: newArticleList,
 			isScraping: true,
+			isClearing: false,
 		}
 		return res.render('index', hbsObject)
 	} catch (error) {
