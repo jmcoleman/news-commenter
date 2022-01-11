@@ -261,8 +261,12 @@ const scrapeArticles = async (req, res) => {
 
 				const savedArticle = await objArticle.save()
 				newArticleList.push({ ...item, _id: savedArticle._id })
+
+				console.log('each: ', newArticleList)
 			}
 		})
+
+		console.log('full: ', newArticleList)
 
 		// send the new article list to handlebars
 		const hbsObject = {
