@@ -255,9 +255,12 @@ const scrapeArticles = async (req, res) => {
 					author: item.author,
 					date: item.date,
 				})
-				await objArticle.save(function () {
-					newArticleList.push({ ...item, _id: objArticle._id })
-				})
+				// await objArticle.save(function () {
+				// 	newArticleList.push({ ...item, _id: objArticle._id })
+				// })
+
+				const savedArticle = await objArticle.save()
+				newArticleList.push({ ...item, _id: savedArticle._id })
 			}
 		})
 
