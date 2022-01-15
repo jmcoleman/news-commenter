@@ -2,13 +2,15 @@ const express = require('express')
 const router = express.Router()
 
 const {
+	getArticles,
 	clearArticles,
 	scrapeArticles,
 } = require('../controllers/articleController')
 
 // load the home page with existing articles and comments
 const loadHome = (req, res) => {
-	res.redirect('/api/articles')
+	// res.redirect('/api/articles')
+	getArticles(req, res)
 }
 
 // @desc    Root route. Will redirect to gets all of the existing articles along with their comments

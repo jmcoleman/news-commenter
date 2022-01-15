@@ -82,7 +82,7 @@ const getScrapedContent = async () => {
 // get all articles (comments as objects)
 const getArticles = async (req, res) => {
 	try {
-		const articles = await Article.find({})
+		Article.find({})
 			.lean()
 			.populate('comments')
 			.exec(function (error, dbResult) {
@@ -235,38 +235,58 @@ const scrapeArticles = async (req, res) => {
 	try {
 		// scrapes and returns articles
 		const articleList = await getScrapedContent()
-
-		// for each article in the articleList, find it in Mongo and if it's not there, append it to a new array
-		// save the new ones to mongo
 		let newArticleList = []
 
-		articleList.forEach(async (item, index) => {
-			const dbResult = await Article.find({
-				headline: item.headline.trim(),
-			}).lean()
+		console.log('-----AFTER getScrapedContent IN SCRAPE ARTICLES')
 
-			// looking in store to see if article exists and saving it if it doesn't; uses headline to find
-			if (dbResult.length === 0) {
-				// create new article in Mongo
-				const objArticle = new Article({
-					headline: item.headline,
-					summary: item.summary.trim(),
-					urlLink: item.urlLink, // website url has already been appended at this point
-					author: item.author,
-					date: item.date,
-				})
-				// await objArticle.save(function () {
-				// 	newArticleList.push({ ...item, _id: objArticle._id })
-				// })
+		newArticleList = await articleList.reduce(
+			async (accumulator, currentValue, currentIndex) => {
+				try {
+					console.log('accumulator value: ' + JSON.stringify(accumulator))
+					console.log('current value: ' + JSON.stringify(currentValue))
+					console.log('current index: ' + currentIndex)
 
-				const savedArticle = await objArticle.save()
-				newArticleList.push({ ...item, _id: savedArticle._id })
+					// if found article it is not a new article
+					const dbResult = await Article.find({
+						headline: currentValue.headline.trim(),
+					}).lean()
 
-				console.log('each: ', newArticleList)
-			}
-		})
+					let articleFound = dbResult.length > 0 ? true : false
+					console.log(
+						'--- is article found for ' +
+							currentValue.headline.trim() +
+							' --- ' +
+							articleFound
+					)
 
-		console.log('full: ', newArticleList)
+					// if article found, it is not a new article that needs to be saved
+					if (articleFound) {
+						return accumulator
+					} else {
+						// create new article in Mongo
+						const objArticle = new Article({
+							headline: currentValue.headline,
+							summary: currentValue.summary.trim(),
+							urlLink: currentValue.urlLink, // website url has already been appended at this point
+							author: currentValue.author,
+							date: currentValue.date,
+						})
+						const savedArticle = await objArticle.save()
+
+						console.log('---EACH NEW SAVED: ', savedArticle)
+						return (await accumulator).concat({
+							...currentValue,
+							_id: savedArticle._id,
+						})
+					}
+				} catch (error) {
+					console.error(error.message)
+					return res.json(error)
+				}
+			},
+			[]
+		)
+		console.log('full with new articles: ', newArticleList)
 
 		// send the new article list to handlebars
 		const hbsObject = {
@@ -279,7 +299,6 @@ const scrapeArticles = async (req, res) => {
 		console.error(error.message)
 		return res.json(error)
 	}
-	// END SCRAPESITE
 }
 
 module.exports = {
