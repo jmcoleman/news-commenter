@@ -66,7 +66,7 @@ const getScrapedContent = async () => {
 					summary: summary.trim(),
 					urlLink: SMASHING_MAGAZINE_URL + urlLink,
 					author: author,
-					date: date,
+					articleDate: date,
 				})
 			}
 		})
@@ -136,7 +136,7 @@ const createArticle = async (req, res) => {
 			summary: req.body.summary.trim(),
 			urlLink: req.body.urlLink,
 			author: req.body.author,
-			date: req.body.date,
+			articleDate: req.body.date,
 		})
 
 		const hbsObject = {
@@ -237,14 +237,12 @@ const scrapeArticles = async (req, res) => {
 		const articleList = await getScrapedContent()
 		let newArticleList = []
 
-		console.log('-----AFTER getScrapedContent IN SCRAPE ARTICLES')
-
 		newArticleList = await articleList.reduce(
 			async (accumulator, currentValue, currentIndex) => {
 				try {
-					console.log('accumulator value: ' + JSON.stringify(accumulator))
-					console.log('current value: ' + JSON.stringify(currentValue))
-					console.log('current index: ' + currentIndex)
+					// console.log('accumulator value: ' + JSON.stringify(accumulator))
+					// console.log('current value: ' + JSON.stringify(currentValue))
+					// console.log('current index: ' + currentIndex)
 
 					// if found article it is not a new article
 					const dbResult = await Article.find({
@@ -252,12 +250,6 @@ const scrapeArticles = async (req, res) => {
 					}).lean()
 
 					let articleFound = dbResult.length > 0 ? true : false
-					console.log(
-						'--- is article found for ' +
-							currentValue.headline.trim() +
-							' --- ' +
-							articleFound
-					)
 
 					// if article found, it is not a new article that needs to be saved
 					if (articleFound) {
@@ -269,11 +261,10 @@ const scrapeArticles = async (req, res) => {
 							summary: currentValue.summary.trim(),
 							urlLink: currentValue.urlLink, // website url has already been appended at this point
 							author: currentValue.author,
-							date: currentValue.date,
+							articleDate: currentValue.articleDate,
 						})
 						const savedArticle = await objArticle.save()
 
-						console.log('---EACH NEW SAVED: ', savedArticle)
 						return (await accumulator).concat({
 							...currentValue,
 							_id: savedArticle._id,
@@ -286,7 +277,7 @@ const scrapeArticles = async (req, res) => {
 			},
 			[]
 		)
-		console.log('full with new articles: ', newArticleList)
+		// console.log('full with new articles: ', newArticleList)
 
 		// send the new article list to handlebars
 		const hbsObject = {

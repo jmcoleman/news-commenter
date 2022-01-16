@@ -1,12 +1,10 @@
 //////////////////////////
 // dependencies
 //////////////////////////
-const mongoose = require('mongoose')
 const express = require('express')
 const connectDB = require('./config/db')
 const path = require('path')
 const dotenv = require('dotenv')
-const moment = require('moment')
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Environment Variables
@@ -24,9 +22,9 @@ dotenv.config({ silent: process.env.NODE_ENV === 'production' })
 // If deployed, use the deployed database. Otherwise use the local database
 
 // connect to MongoDB on Heroku using MONGODB_URI environment variable
-let MONGODB_URI = process.env.MONGODB_URI
+// let MONGODB_URI = process.env.MONGODB_URI
 // or connect to the local mongo environment for dev
-// let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
 // or run Mongo Atlas in dev
 // let MONGODB_URI = `mongodb+srv://${process.env.DB_USER_ATLAS}:${process.env.DB_PASSWORD_ATLAS}@${process.env.DB_CLUSTER_ATLAS}/${process.env.DB_NAME_ATLAS}?retryWrites=true&w=majority`
 
@@ -46,7 +44,6 @@ app.set('deployment', process.env.NODE_ENV || 'development') // will be set to p
 // body parsing middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-// app.use(cookieParser());
 
 // serve static folders
 app.use(express.static(__dirname + '/public'))
@@ -57,8 +54,8 @@ app.use(express.static(__dirname + '/public/assets/img'))
 /////////////////
 const exphbs = require('express-handlebars')
 
-//Here you can pass helpers that you would normally define in registerHelpers
-//and you can also define stuff like `defaultLayout` and `partialsDir`
+//pass helpers that can otherwise be defined in registerHelpers
+//define stuff like `defaultLayout` and `partialsDir`
 const hbs = exphbs.create({
 	helpers: {
 		defaultLayout: 'main',
@@ -71,9 +68,11 @@ const hbs = exphbs.create({
 			return JSON.stringify(value)
 		},
 		readableDate: function (date) {
-			// return in utc to convert the date from the offset provided to UTC
-			// these dates have no timezone
-			return moment.utc(date).format('MM/DD/YYYY')
+			// the articles have dates without times
+			return new Date(date + ' 00:00:00Z').toLocaleDateString(
+				{},
+				{ timeZone: 'UTC' }
+			)
 		},
 	},
 })

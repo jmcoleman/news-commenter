@@ -9,7 +9,6 @@ const {
 
 // load the home page with existing articles and comments
 const loadHome = (req, res) => {
-	// res.redirect('/api/articles')
 	getArticles(req, res)
 }
 

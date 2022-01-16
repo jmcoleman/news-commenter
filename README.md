@@ -30,7 +30,7 @@ $ npm install cheerio
 $ npm install axios
 $ npm install path
 $ npm install dotenv
-$ npm install moment
+$ npm install luxon
 ```
 
 Create an .env file at the root of the project and populate with the sensitive connection info and/or desired logging.

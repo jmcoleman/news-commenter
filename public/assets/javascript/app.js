@@ -88,6 +88,16 @@ function handleCommentFormSubmit(e) {
 function handleArticlesClick(e) {
 	// e.preventDefault()
 
+	// FOCUS COMMENT if target is the comment button or the icon in it
+	if (
+		e.target &&
+		(e.target.matches("button[data-bs-toggle='collapse']") ||
+			e.target.matches('.far.fa-comments'))
+	) {
+		// give focus to comment entry when toggle comment area
+		event.target.closest('.card-body').querySelector('#comment_update').focus()
+	}
+
 	// DELETE COMMENT from an article
 	if (e.target && e.target.parentNode.classList.contains('delete-comment')) {
 		const commentId = e.target.parentNode.getAttribute('data-id')
