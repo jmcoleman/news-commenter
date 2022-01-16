@@ -1,39 +1,23 @@
-# news-commenter
+# News Article Commenter
 
-News commenter is a web application that lets users view and leave comments on the recent articles. The articles are captured by scraping the content from another site.
+The News Article Scraper and Commenter is a web application that lets users view and leave comments on the most recent articles that have been scraped from a site.
 
 **Problem it solves:** \
 Provide a means for users to see the latest news and leave comments that are visible to others on the site. \
+
 **How solved:** \
-Scrape current news articles from a news site and present that such that comments can be entered and persisted to a data store or cleared. \
+Scrape current news articles from a news site and present that such that comments can be entered and persisted to a data store or cleared and reset. \
+
 **Technical approach:** \
 Use cheerio to scrape content from a news site. Store the results in MongoDB using Mongoose. Allow users to view the articles and comment on them. Persist the comments to MongoDB.
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+This project requires Node v14.15.4 or higher. Install Node using nvm.
 
-Node, NPM and a command line tool such as GitBash.
+## Environment Variables
 
-### Installing
-
-To get a development environment up and running, clone the repository locally.
-
-From the command line, run 'npm init' to setup the project with the below dependencies or by running each of the below directly:
-
-```
-$ npm install express
-$ npm install express-handlebars
-$ npm install handlebars-helpers
-$ npm install mongoose
-$ npm install cheerio
-$ npm install axios
-$ npm install path
-$ npm install dotenv
-$ npm install luxon
-```
-
-Create an .env file at the root of the project and populate with the sensitive connection info and/or desired logging.
+Create an .env file at the root of the project and populate with connection info and/or desired logging. Example below.
 
 ```
 # Local Mongo DB
@@ -43,39 +27,27 @@ DB_NAME="newsDB"
 # verbose logs
 #DEBUG=* node server.js
 #DEBUG=express:router* node server.js
-
 ```
 
-## Running tests
+## Getting Started
 
-N/A - No automated tests in place.
+Install the requisite Node modules and start the app.
 
-Manual unit testing was done to add scraped articles, add new articles after scraping, add and remove comments.
+```
+npm install
+npm run start
+```
+
+Open http://localhost:8080
 
 ## Deployment
 
-The project is **deployed** to Heroku pages at https://news-commenter.herokuapp.com
+Deployed to Heroku at https://news-commenter.herokuapp.com
 
 ## Built With
 
-Express, Express-Handlebars, Mongoose, Cheerio, MongoDB, JQuery, HTML5, CSS3, Bootstrap, Font Awesome
-
-## Contributing
-
-N/A
-
-## Versioning
-
-This is version 1.0
-
-## Authors
-
-- **Jenni Coleman** - _Development and Testing_
+Express, Express-Handlebars, Mongoose, Cheerio, MongoDB, HTML5, CSS3, Bootstrap 5, Font Awesome 5
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-N/A
+Project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for specifics
