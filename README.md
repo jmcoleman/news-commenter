@@ -13,7 +13,7 @@ Use cheerio to scrape content from a news site. Store the results in MongoDB usi
 
 ## Prerequisites
 
-This project requires Node v14.15.4 or higher. Install Node using nvm.
+This project uses Node v16.13.2 or higher. Install Node using nvm.
 
 ## Environment Variables
 

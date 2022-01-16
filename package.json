@@ -25,12 +25,12 @@
 		"encoding": "^0.1.13",
 		"express": "^4.17.2",
 		"express-handlebars": "^6.0.2",
-		"handlebars-helpers": "^0.10.0",
+		"handlebars-helpers": "^0.9.8",
 		"highlight.js": "^11.3.1",
 		"mongoose": "^6.1.4",
 		"path": "^0.12.7"
 	},
 	"engines": {
-		"node": "14.x"
+		"node": "16.x"
 	}
 }
