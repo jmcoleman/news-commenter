@@ -39,6 +39,9 @@ const getScrapedContent = async () => {
 			// Save the text of the "article--post__title" class element in a "headline" variable
 			let headline = $(element).find('.article--post__title').text()
 
+			let imgSrc = $(element).find('.bio-image-image').attr('src')
+			let imgAlt = $(element).find('.bio-image-image').attr('alt')
+
 			// In the currently selected element, look at its child elements (i.e., its p-tags with a class "article--post__teaser"),
 			// then filter for any text elements that are contents and save it to the "summary" variable
 			let summary = $(element)
@@ -67,6 +70,8 @@ const getScrapedContent = async () => {
 					urlLink: SMASHING_MAGAZINE_URL + urlLink,
 					author: author,
 					articleDate: date,
+					imgSrc: imgSrc,
+					imgAlt: imgAlt,
 				})
 			}
 		})
@@ -265,6 +270,8 @@ const scrapeArticles = async (req, res) => {
 							urlLink: currentValue.urlLink, // website url has already been appended at this point
 							author: currentValue.author,
 							articleDate: currentValue.articleDate,
+							imgSrc: currentValue.imgSrc,
+							imgAlt: currentValue.imgAlt,
 						})
 						const savedArticle = await objArticle.save()
 

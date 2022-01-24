@@ -24,6 +24,12 @@ const ArticleSchema = new Schema({
 	articleDate: {
 		type: String,
 	},
+	imgSrc: {
+		type: String,
+	},
+	imgAlt: {
+		type: String,
+	},
 	comments: [
 		{
 			type: Schema.Types.ObjectId,
