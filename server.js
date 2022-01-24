@@ -22,9 +22,9 @@ dotenv.config({ silent: process.env.NODE_ENV === 'production' })
 // If deployed, use the deployed database. Otherwise use the local database
 
 // connect to MongoDB on Heroku using MONGODB_URI environment variable
-let MONGODB_URI = process.env.MONGODB_URI
+// let MONGODB_URI = process.env.MONGODB_URI
 // or connect to the local mongo environment for dev
-// let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
 // or run Mongo Atlas in dev
 // let MONGODB_URI = `mongodb+srv://${process.env.DB_USER_ATLAS}:${process.env.DB_PASSWORD_ATLAS}@${process.env.DB_CLUSTER_ATLAS}/${process.env.DB_NAME_ATLAS}?retryWrites=true&w=majority`
 
@@ -35,7 +35,6 @@ connectDB(MONGODB_URI)
 // configure Express
 ///////////////////////
 const app = express()
-app.use(express.json())
 
 // sets the some express variables for info
 app.set('port', process.env.PORT || 8080)
@@ -67,12 +66,16 @@ const hbs = exphbs.create({
 		getStringifiedJson: function (value) {
 			return JSON.stringify(value)
 		},
-		readableDate: function (date) {
-			// the articles have dates without times
-			return new Date(date + ' 00:00:00Z').toLocaleDateString(
+		appendTime: function (date) {
+			// used with the article date
+			return new Date(date + ' 00:00:00Z' + ' UTC').toLocaleDateString(
 				{},
 				{ timeZone: 'UTC' }
 			)
+		},
+		readableDate: function (date) {
+			// used with createdAt date
+			return new Date(date + ' UTC').toLocaleString({}, { timeZone: 'UTC' })
 		},
 	},
 })

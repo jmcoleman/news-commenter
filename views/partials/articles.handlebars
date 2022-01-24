@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col main">
-                    <h1>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h1>
+                    <h3>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h3>
 
                     {{#if articles.length}}
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -32,9 +32,10 @@
                              <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h3 class="card-title">{{headline}}</h3>
+                                        <h5 class="card-title">{{headline}}</h5>
                                         <h6>Written by {{author}}</h6>
-                                        <h6 class="text-muted">{{readableDate articleDate}}</h6>
+                                        <div class="text-black-50">{{appendTime articleDate}}</div>
+                                        <div class="text-black-50">Added {{readableDate createdAt}}</div>
                                         <hr>
                                         <p class="card-text">{{summary}}</p>
                                         <p class="text-end"><small><span id="comment-length-{{_id}}">

@@ -83,6 +83,7 @@ const getScrapedContent = async () => {
 const getArticles = async (req, res) => {
 	try {
 		Article.find({})
+			.sort({ createdAt: -1 })
 			.lean()
 			.populate('comments')
 			.exec(function (error, dbResult) {
@@ -90,6 +91,7 @@ const getArticles = async (req, res) => {
 					console.error(error.message)
 					return res.json(error)
 				}
+
 				// send to handlebars
 				const hbsObject = {
 					articles: dbResult,
@@ -107,6 +109,7 @@ const getArticle = async (req, res, id) => {
 	try {
 		// get article and associated comments
 		const article = await Article.find({ _id: id })
+			.sort({ createdAt: -1 })
 			.lean()
 			.populate('comments')
 			.exec(function (error, dbResult) {
@@ -268,6 +271,7 @@ const scrapeArticles = async (req, res) => {
 						return (await accumulator).concat({
 							...currentValue,
 							_id: savedArticle._id,
+							createdAt: savedArticle.createdAt,
 						})
 					}
 				} catch (error) {

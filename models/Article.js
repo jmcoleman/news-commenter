@@ -24,10 +24,6 @@ const ArticleSchema = new Schema({
 	articleDate: {
 		type: String,
 	},
-	createDate: {
-		type: Date,
-		default: Date.now,
-	},
 	comments: [
 		{
 			type: Schema.Types.ObjectId,
@@ -35,6 +31,8 @@ const ArticleSchema = new Schema({
 		},
 	],
 })
+
+ArticleSchema.set('timestamps', true)
 
 // This creates our model from the above schema, using mongoose's model method
 const Article = mongoose.model('Article', ArticleSchema)

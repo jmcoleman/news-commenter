@@ -16,11 +16,9 @@ const ArticleCommentSchema = new Schema({
 		trim: true,
 		required: true,
 	},
-	createDate: {
-		type: Date,
-		default: Date.now,
-	},
 })
+
+ArticleCommentSchema.set('timestamps', true)
 
 const ArticleComment = mongoose.model('ArticleComment', ArticleCommentSchema)
 
