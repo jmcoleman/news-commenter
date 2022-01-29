@@ -21,10 +21,10 @@ const createComment = async (req, res, id) => {
 
 			// send the updated article back to the client
 			// console.log(JSON.stringify(updatedArticle))
-			return res.json(updatedArticle)
+			return res.status(201).json(updatedArticle)
 		}
 	} catch (error) {
-		return res.json(error)
+		return res.status(500).json(error)
 	}
 }
 
@@ -55,10 +55,10 @@ const deleteComment = async (req, res, articleId, id) => {
 			{ $pull: { comments: { $in: [id] } } }
 		).exec()
 
-		return res.status(200).send(JSON.stringify(response))
+		return res.status(204).json(response)
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).send(JSON.stringify(error))
+		return res.status(500).json(error)
 	}
 }
 

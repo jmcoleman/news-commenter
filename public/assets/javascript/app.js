@@ -1,3 +1,5 @@
+const ALERT_MSG_TIME = 5000
+
 ////////////////////////
 // event handlers
 ////////////////////////
@@ -30,7 +32,7 @@ function handleCommentFormSubmit(e) {
 				}
 
 				// Send the POST request.
-				fetch(`/comments/${id}`, {
+				fetch(`/api/articles/comments/${id}`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -105,7 +107,7 @@ function handleArticlesClick(e) {
 		const articleId = element.parentNode.getAttribute('data-article-id')
 
 		// Send the DELETE request.
-		fetch(`/comments/${articleId}/${commentId}`, {
+		fetch(`/api/articles/comments/${articleId}/${commentId}`, {
 			method: 'DELETE',
 		}).then(function () {
 			// get the current number of comments
@@ -153,6 +155,15 @@ function handleAppLoad() {
 			forceMasonryToResize(e.target)
 		})
 	}
+
+	// show messages 5 seconds
+	setTimeout(() => {
+		let alertNodes = document.querySelectorAll('.alert')
+		alertNodes.forEach((node) => {
+			const alert = new bootstrap.Alert(node)
+			alert.close()
+		})
+	}, ALERT_MSG_TIME)
 }
 
 ////////////////////////

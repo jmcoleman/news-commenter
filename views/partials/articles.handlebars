@@ -3,28 +3,93 @@
         <div class="container">
             <div class="row">
                 <div class="col main">
-                    <h3>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h3>
 
-                    {{#if articles.length}}
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <p class="my-0">
-                            {{#isTruthy isScraping}}You've found {{articles.length}} new article(s).{{/isTruthy}}
-                            {{#isFalsey isScraping}}There are {{articles.length}} article(s) in the stored collection.{{/isFalsey}}
-                            </p>
-                            <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                            </button>
-                        </div> 
-                    {{else}}
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <p class="my-0">
-                            {{#isTruthy isClearing}}All articles have been cleared. To reload <a href="/scrape" class="alert-link">Scrape Articles</a> for additional content.{{/isTruthy}}
-                            {{#isTruthy isScraping}}No new articles have been added.  Navigate <a href="/" class="alert-link">Home</a> to check out the existing content.{{/isTruthy}}
-                             {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection. <a href="/scrape" class="alert-link">Scrape</a> some to add content.{{/isFalsey}}{{/isFalsey}}
-                             </p>
-                             <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                            </button>
-                        </div>
-                    {{/if}} 
+                    {{!-- success alerts --}}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <p class="my-0"> 
+                        <i class="fas fa-check-circle me-1"></i>
+                        {{#if articles.length}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
+                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
+                        {{else}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
+                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
+                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
+                        {{/if}} 
+                        </p>
+                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+
+
+                    {{!-- warning alerts --}}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <p class="my-0"> 
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        {{#if articles.length}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
+                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
+                        {{else}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
+                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
+                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
+                        {{/if}} 
+                        </p>
+                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+
+                    {{!-- danger alerts --}}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <p class="my-0"> 
+                        <i class="fas fa-exclamation-circle me-1"></i>
+                        {{#if articles.length}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
+                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
+                        {{else}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
+                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
+                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
+                        {{/if}} 
+                        </p>
+                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+
+                    {{!-- information alerts --}}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <p class="my-0">
+                        <i class="fas fa-info-circle me-1"></i> 
+                        {{#if articles.length}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
+                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
+                        {{else}}
+                            {{!-- //HERE --}}
+                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
+                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
+                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
+                        {{/if}} 
+                        </p>
+                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+
+                    <h3>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h3>
+                    {{#unless articles}}
+                        <p>
+                            {{#isTruthy isClearing}}<a href="/api/articles/scrape" class="alert-link">Scrape Articles</a> to reload with content.{{/isTruthy}}
+                            {{#isTruthy isScraping}}Navigate <a href="/" class="alert-link">Home</a> to check out the existing content.{{/isTruthy}}
+                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}<a href="/api/articles/scrape" class="alert-link">Scrape</a> some to add content.{{/isFalsey}}
+                            {{/isFalsey}}
+                        </p>
+                    {{/unless}}
 
                     {{#if articles}} 
                         <div id="articles" class="row row-cols-1 row-cols-md-3 g-4" >
@@ -52,11 +117,11 @@
                                             </span> Comments</small></p>
                                         <!--buttons -->
                                         <div class="d-flex">
-                                            <a target="_blank" href={{urlLink}} class="btn btn-success mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
-                                            <button hidden id="btn-article-pin" class="btn btn-success mb-2 mx-1" data-id={{_id}}>
+                                            <a target="_blank" href={{urlLink}} class="btn btn-primary mb-2 mx-1"><i class="fas fa-book-open pr-1"></i> Read It</a>
+                                            <button hidden id="btn-article-pin" class="btn btn-primary mb-2 mx-1" data-id={{_id}}>
                                                 <i class="fas fa-thumbtack pr-1"></i> Pin It
                                             </button>
-                                            <button id="btn-article-comment" class="btn btn-success mb-2 mx-1 ml-auto" data-id={{_id}} data-bs-toggle="collapse" data-bs-target="#comments-{{_id}}" aria-expanded="false" aria-controls ="#comments-{{_id}}" >
+                                            <button id="btn-article-comment" class="btn btn-primary mb-2 mx-1 ml-auto" data-id={{_id}} data-bs-toggle="collapse" data-bs-target="#comments-{{_id}}" aria-expanded="false" aria-controls ="#comments-{{_id}}" >
                                                 <i class="far fa-comments pr-1"></i>
                                             </button>
                                         </div>
@@ -86,7 +151,7 @@
                                                             <input type="text" id="username_update" name="user_name" placeholder="User Name..." class="form-control">
                                                         </div>
                                                     </div>
-                                                    <button id="btn-article-add-comment" class="btn btn-success mb-2 mx-1 ms-auto" type="submit" data-id={{_id}}>Add</button>
+                                                    <button id="btn-article-add-comment" class="btn btn-primary mb-2 mx-1 ms-auto" type="submit" data-id={{_id}}>Add</button>
                                                 </form>
                                             </div>
                                         </div>

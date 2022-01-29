@@ -7,7 +7,7 @@ const {
 } = require('../controllers/articleCommentController')
 
 // @desc    Saves a new comment on an article
-// @route   POST /comments/:id
+// @route   POST /api/articles/comments/:id
 router.post('/:id', (req, res) => {
 	// console.log('ID IS:', req.params.id)
 	const newComment = createComment(
@@ -18,7 +18,7 @@ router.post('/:id', (req, res) => {
 })
 
 // @desc    Deletes a comment on an article
-// @route   DELETE /comments/:id
+// @route   DELETE /api/articles/comments/:articleId/:id
 router.delete('/:articleId/:id', (req, res) =>
 	deleteComment(req, res, req.params.articleId, req.params.id)
 )
