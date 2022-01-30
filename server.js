@@ -68,21 +68,33 @@ const hbs = exphbs.create({
 	layoutsDir: path.join(__dirname, 'views/layouts/'),
 	partialsDir: path.join(__dirname, 'views/partials/'),
 	helpers: {
-		sayHello: function () {
-			alert('Hello World')
+		eq: function (a, b) {
+			return a === b
 		},
-		getStringifiedJson: function (value) {
-			return JSON.stringify(value)
+		gt: function (a, b) {
+			return a > b
 		},
+		gte: function (a, b) {
+			return a >= b
+		},
+		lt: function (a, b) {
+			return a < b
+		},
+		lte: function (a, b) {
+			return a <= b
+		},
+		ne: function (a, b) {
+			return a !== b
+		},
+		// used with the article date
 		appendTime: function (date) {
-			// used with the article date
 			return new Date(date + ' 00:00:00Z' + ' UTC').toLocaleDateString(
 				{},
 				{ timeZone: 'UTC' }
 			)
 		},
+		// used with createdAt date
 		readableDate: function (date) {
-			// used with createdAt date
 			return new Date(date + ' UTC').toLocaleString({}, { timeZone: 'UTC' })
 		},
 	},
@@ -103,10 +115,7 @@ const { getArticles } = require('./controllers/articleController')
 // base route
 app.get('/', getArticles)
 
-app.use(
-	'/api/articles/comments',
-	require('./routes/article-comment-routes.js')
-)
+app.use('/api/articles/comments', require('./routes/article-comment-routes.js'))
 app.use('/api/articles', require('./routes/article-routes.js'))
 
 // 404 Route (must be last route)

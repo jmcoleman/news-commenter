@@ -4,83 +4,19 @@
             <div class="row">
                 <div class="col main">
 
-                    {{!-- success alerts --}}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <p class="my-0"> 
-                        <i class="fas fa-check-circle me-1"></i>
-                        {{#if articles.length}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
-                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
-                        {{else}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
-                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
-                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
-                        {{/if}} 
-                        </p>
-                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                        </button>
-                    </div>
+                    {{#if (ne alertState "none")}}
+                        <div class="alert alert-{{alertState}} alert-dismissible fade show" role="alert">
+                            <p class="my-0"> 
+                            <i class="{{#if (eq alertState "success")}}fas fa-check-circle{{/if}}{{#if (eq alertState "warning")}}fas fa-exclamation-triangle{{/if}}{{#if (eq alertState "danger")}}fas fa-exclamation-circle{{/if}}{{#if (eq alertState "info")}}fas fa-info-circle{{/if}}
+                            me-1"></i>
+                            {{alertMsg}}
+                            </p>
+                            <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    {{/if}} 
 
-
-                    {{!-- warning alerts --}}
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <p class="my-0"> 
-                        <i class="fas fa-exclamation-triangle me-1"></i>
-                        {{#if articles.length}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
-                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
-                        {{else}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
-                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
-                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
-                        {{/if}} 
-                        </p>
-                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                        </button>
-                    </div>
-
-                    {{!-- danger alerts --}}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <p class="my-0"> 
-                        <i class="fas fa-exclamation-circle me-1"></i>
-                        {{#if articles.length}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
-                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
-                        {{else}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
-                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
-                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
-                        {{/if}} 
-                        </p>
-                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                        </button>
-                    </div>
-
-                    {{!-- information alerts --}}
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <p class="my-0">
-                        <i class="fas fa-info-circle me-1"></i> 
-                        {{#if articles.length}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isScraping}}Scraping the Smashing Magazine site added {{articles.length}} new article(s).{{/isTruthy}} 
-                            {{#isFalsey isScraping}}A total of {{articles.length}} article(s) are in the stored collection.{{/isFalsey}}
-                        {{else}}
-                            {{!-- //HERE --}}
-                            {{#isTruthy isClearing}}All of the articles have been cleared.{{/isTruthy}}
-                            {{#isTruthy isScraping}}No new articles are added.{{/isTruthy}}
-                            {{#isFalsey isClearing}}{{#isFalsey isScraping}}No articles are stored in the collection.{{/isFalsey}}{{/isFalsey}}
-                        {{/if}} 
-                        </p>
-                        <button type="button" class="btn-close btn-light btn-adjust" data-bs-dismiss="alert" aria-label="Close">
-                        </button>
-                    </div>
-
+   
                     <h3>{{#isTruthy isScraping}}New {{/isTruthy}}Articles</h3>
                     {{#unless articles}}
                         <p>

@@ -10,6 +10,8 @@ const clearArticles = async (req, res) => {
 		await Article.deleteMany({})
 
 		const hbsObject = {
+			alertState: 'success',
+			alertMsg: 'All of the articles have been cleared.',
 			articles: null,
 			isScraping: false,
 			isClearing: true,
@@ -17,7 +19,11 @@ const clearArticles = async (req, res) => {
 		return res.render('home', hbsObject)
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error found when clearing the data store.',
+			error: error,
+		})
 	}
 }
 
@@ -67,8 +73,15 @@ const scrapeArticles = async (req, res, next) => {
 			[]
 		)
 
+		let msg =
+			newArticleList.length > 0
+				? `A total of ${newArticleList.length} article(s) are added to the stored collection.`
+				: 'No new articles are added.'
+
 		// send the new article list to handlebars
 		const hbsObject = {
+			alertState: 'success',
+			alertMsg: msg,
 			articles: newArticleList,
 			isScraping: true,
 			isClearing: false,
@@ -77,7 +90,11 @@ const scrapeArticles = async (req, res, next) => {
 	} catch (error) {
 		console.error(error.message)
 		// next(error)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error encountered while scraping the Smashing magazine site.',
+			error: error,
+		})
 	}
 }
 
@@ -94,15 +111,27 @@ const getArticles = async (req, res) => {
 					return res.json(error)
 				}
 
+				let alert = dbResult.length > 0 ? 'info' : 'success'
+				let msg =
+					dbResult.length > 0
+						? `${dbResult.length} articles are in the collection.`
+						: 'No articles are stored in the collection.'
+
 				// send to handlebars
 				const hbsObject = {
+					alertState: alert,
+					alertMsg: msg,
 					articles: dbResult,
 				}
 				return res.render('home', hbsObject)
 			})
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error encountered while retrieving the stored articles.',
+			error: error,
+		})
 	}
 }
 
@@ -124,13 +153,19 @@ const getArticle = async (req, res) => {
 
 				// send to handlebars
 				const hbsObject = {
+					alertState: 'success',
+					alertMsg: 'Article retrieved.',
 					articles: dbResult,
 				}
 				return res.render('home', hbsObject)
 			})
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error encountered while getting an article from the store.',
+			error: error,
+		})
 	}
 }
 
@@ -147,13 +182,19 @@ const createArticle = async (req, res) => {
 		})
 
 		const hbsObject = {
+			alertState: 'success',
+			alertMsg: 'Article created.',
 			articles: newArticle,
 		}
 
 		return res.render('home', hbsObject)
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error encountered while creating an article.',
+			error: error,
+		})
 	}
 }
 
@@ -176,7 +217,8 @@ const deleteArticle = async (req, res) => {
 
 		// create object to send back a message and the id of the document that was removed
 		const response = {
-			message: 'Article successfully deleted',
+			alertState: 'success',
+			alertMsg: 'Article successfully deleted.',
 			id: articleRemoved._id,
 			headline: articleRemoved.headline,
 			comments: articleRemoved.comments,
@@ -185,7 +227,11 @@ const deleteArticle = async (req, res) => {
 		return res.status(200).send(response)
 	} catch (error) {
 		console.error(error.message)
-		return res.status(500).json(error)
+		return res.status(500).json({
+			alertState: 'danger',
+			alertMsg: 'Error encountered while deleting an article.',
+			error: error,
+		})
 	}
 }
 
