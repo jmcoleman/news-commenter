@@ -15,7 +15,6 @@ const clearArticles = async (req, res) => {
 			isClearing: true,
 		}
 		return res.render('home', hbsObject)
-		// return res.render('404', hbsObject)
 	} catch (error) {
 		console.error(error.message)
 		return res.status(500).json(error)
@@ -23,7 +22,7 @@ const clearArticles = async (req, res) => {
 }
 
 // save the scraped data to the store
-const scrapeArticles = async (req, res) => {
+const scrapeArticles = async (req, res, next) => {
 	try {
 		// scrapes and returns articles
 		const articleList = await getScrapedContent()
@@ -61,7 +60,8 @@ const scrapeArticles = async (req, res) => {
 					})
 				} catch (error) {
 					console.error(error.message)
-					return res.status(500).json(error)
+					next(error)
+					// return res.status(500).json(error)
 				}
 			},
 			[]
@@ -76,6 +76,7 @@ const scrapeArticles = async (req, res) => {
 		return res.render('home', hbsObject)
 	} catch (error) {
 		console.error(error.message)
+		// next(error)
 		return res.status(500).json(error)
 	}
 }
@@ -106,8 +107,10 @@ const getArticles = async (req, res) => {
 }
 
 // retrieve 1 article (comments as array of objects)
-const getArticle = async (req, res, id) => {
+const getArticle = async (req, res) => {
 	try {
+		let id = req.params.id
+
 		// get article and associated comments
 		const article = await Article.find({ _id: id })
 			.sort({ createdAt: -1 })
@@ -155,8 +158,10 @@ const createArticle = async (req, res) => {
 }
 
 // delete an article
-const deleteArticle = async (req, res, id) => {
+const deleteArticle = async (req, res) => {
 	try {
+		let id = req.params.id
+
 		// remove the article
 		const articleRemoved = await Article.findByIdAndRemove({ _id: id }).lean()
 

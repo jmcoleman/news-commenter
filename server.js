@@ -100,16 +100,14 @@ require('handlebars-helpers')(['comparison'])
 ////////////////////////////////////////////////////////
 const { getArticles } = require('./controllers/articleController')
 
-const articleRoutes = require('./routes/article-routes.js')
-const articleCommentRoutes = require('./routes/article-comment-routes.js')
-
-// app.options('/', (req, res) => res.send())
-
 // base route
-app.get('/', (req, res) => getArticles(req, res))
+app.get('/', getArticles)
 
-app.use('/api/articles/comments', articleCommentRoutes)
-app.use('/api/articles', articleRoutes)
+app.use(
+	'/api/articles/comments',
+	require('./routes/article-comment-routes.js')
+)
+app.use('/api/articles', require('./routes/article-routes.js'))
 
 // 404 Route (must be last route)
 app.get('*', function (req, res) {

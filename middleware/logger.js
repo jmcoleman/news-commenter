@@ -38,6 +38,8 @@ const cliLogger = (req, res, next) => {
 	let url = req.url
 	let status = res.statusCode
 
+	let origUrl = req.originalUrl
+
 	const start = process.hrtime()
 	const durationInMilliseconds = getActualRequestDurationInMilliseconds(start)
 	let log = `[${formatted_date}] ${chalk.cyan(method)}:${chalk.greenBright(
@@ -47,6 +49,7 @@ const cliLogger = (req, res, next) => {
 	)} ${durationInMilliseconds.toLocaleString()} ms [${chalk.blue(
 		localized_date
 	)}]`
+
 	console.log(log)
 	next()
 }

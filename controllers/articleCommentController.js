@@ -2,8 +2,10 @@ const ArticleComment = require('../models/ArticleComment')
 const Article = require('../models/Article')
 
 // save a new comment on an article
-const createComment = async (req, res, id) => {
+const createComment = async (req, res) => {
 	try {
+		let id = req.params.id ? req.params.id : req.body.id
+
 		// Create a new comment in the db
 		const newComment = await ArticleComment.create(req.body)
 
@@ -29,8 +31,11 @@ const createComment = async (req, res, id) => {
 }
 
 // delete a comment on an article
-const deleteComment = async (req, res, articleId, id) => {
+const deleteComment = async (req, res) => {
 	try {
+		let articleId = req.params.articleId
+		let id = req.params.id
+
 		// console.log('in deleteComment')
 		// console.log('articleId: ', articleId)
 		// console.log('id: ', id)
