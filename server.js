@@ -24,9 +24,9 @@ dotenv.config({ silent: process.env.NODE_ENV === 'production' })
 // If deployed, use the deployed database. Otherwise use the local database
 
 // connect to MongoDB on Heroku using MONGODB_URI environment variable
-let MONGODB_URI = process.env.MONGODB_URI
+// let MONGODB_URI = process.env.MONGODB_URI
 // or connect to the local mongo environment for dev
-// let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+let MONGODB_URI = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
 // or run Mongo Atlas in dev
 // let MONGODB_URI = `mongodb+srv://${process.env.DB_USER_ATLAS}:${process.env.DB_PASSWORD_ATLAS}@${process.env.DB_CLUSTER_ATLAS}/${process.env.DB_NAME_ATLAS}?retryWrites=true&w=majority`
 
@@ -49,8 +49,8 @@ app.use(express.json())
 // serve static folders
 app.use(express.static(__dirname + '/public'))
 
-// logger middleware
-app.use(cliLogger)
+// logger middleware when in dev
+if (app.get('deployment') === 'development') app.use(cliLogger)
 
 // error handling middleware
 app.use(errorHandler)

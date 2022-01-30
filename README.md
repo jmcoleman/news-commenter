@@ -2,34 +2,33 @@
 
 The News Article Scraper and Commenter is a web application that lets users view and leave comments on the most recent articles that have been scraped from a site.
 
-**Problem it solves:** \
-Provide a means for users to see the latest news and leave comments that are visible to others on the site. \
+**Problem it solves:**\
+Allows users to view the latest Smashing Magazine news and leave comments that are visible to others on a shared site.
 
-**How solved:** \
-Scrape current news articles from a news site and present that such that comments can be entered and persisted to a data store or cleared and reset. \
+**How solved:**\
+Scrape current news articles and present that such that comments can be entered and persisted to a data store or cleared and reset.
 
-**Technical approach:** \
+**Technical approach:**\
 Use cheerio to scrape content from a news site. Store the results in MongoDB using Mongoose. Allow users to view the articles and comment on them. Persist the comments to MongoDB.
 
 ## Prerequisites
 
 This project uses Node v16.13.2 or higher. Install Node using nvm.
 
-## Environment Variables
+## Getting Started
 
-Create an .env file at the root of the project and populate with connection info and/or desired logging. Example below.
+### Environment Variables
+
+Rename .env.example to .env at the root of the project and populate with connection info for the desired values.
 
 ```
 # Local Mongo DB
 DB_HOST="127.0.0.1"
 DB_NAME="newsDB"
-
-# verbose logs
-#DEBUG=* node server.js
-#DEBUG=express:router* node server.js
+...
 ```
 
-## Getting Started
+### Usage
 
 Install the requisite Node modules and start the app.
 
@@ -38,7 +37,16 @@ npm install
 npm run start
 ```
 
-Open http://localhost:8080
+From a browser open http://localhost:8080
+
+### Debugging
+
+At the command line prepend with DEBUG=_ or DEBUG=express:router_ for verbose logs from express.
+
+```
+DEBUG=* node server.js
+DEBUG=express:router* node server.js
+```
 
 ## Deployment
 
