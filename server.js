@@ -52,9 +52,6 @@ app.use(express.static(__dirname + '/public'))
 // logger middleware when in dev
 if (app.get('deployment') === 'development') app.use(cliLogger)
 
-// error handling middleware
-app.use(errorHandler)
-
 /////////////////
 // handlebars
 /////////////////
@@ -110,13 +107,18 @@ require('handlebars-helpers')(['comparison'])
 ////////////////////////////////////////////////////////
 // Import routes and give the server access to them.
 ////////////////////////////////////////////////////////
+const authorizeIPs = require('./middleware/authorizeIPs')
+const apiRouter = require('./routes/api-router.js')
+const articleRouter = require('./routes/article-router.js')
+
 const { getArticles } = require('./controllers/articleController')
 
-// base route
+// home page route
 app.get('/', getArticles)
 
-app.use('/api/articles/comments', require('./routes/article-comment-routes.js'))
-app.use('/api/articles', require('./routes/article-routes.js'))
+// api routes
+app.use('/api', authorizeIPs, apiRouter)
+app.use('/api/articles', authorizeIPs, articleRouter)
 
 // 404 Route (must be last route)
 app.get('*', function (req, res) {
@@ -128,6 +130,9 @@ app.get('*', function (req, res) {
 
 	res.type('txt').send('Not found') // otherwise, send plain-text
 })
+
+// error handling middleware
+app.use(errorHandler)
 
 // app.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'))
 app.listen(app.get('port'), function () {

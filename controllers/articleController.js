@@ -138,10 +138,10 @@ const getArticles = async (req, res) => {
 // retrieve 1 article (comments as array of objects)
 const getArticle = async (req, res) => {
 	try {
-		let id = req.params.id
+		let articleid = req.params.articleid
 
 		// get article and associated comments
-		const article = await Article.find({ _id: id })
+		const article = Article.find({ _id: articleid })
 			.sort({ createdAt: -1 })
 			.lean()
 			.populate('comments')
@@ -151,10 +151,16 @@ const getArticle = async (req, res) => {
 					return res.json(error)
 				}
 
+				let state = dbResult.length > 0 ? 'success' : 'warning'
+				let msg =
+					dbResult.length > 0
+						? 'Article retrieved.'
+						: 'Unable to retrieve article.'
+
 				// send to handlebars
 				const hbsObject = {
-					alertState: 'success',
-					alertMsg: 'Article retrieved.',
+					alertState: state,
+					alertMsg: msg,
 					articles: dbResult,
 				}
 				return res.render('home', hbsObject)
@@ -201,10 +207,12 @@ const createArticle = async (req, res) => {
 // delete an article
 const deleteArticle = async (req, res) => {
 	try {
-		let id = req.params.id
+		let articleid = req.params.articleid
 
 		// remove the article
-		const articleRemoved = await Article.findByIdAndRemove({ _id: id }).lean()
+		const articleRemoved = await Article.findByIdAndRemove({
+			_id: articleid,
+		}).lean()
 
 		ArticleComment.deleteMany(
 			{ _id: { $in: articleRemoved.comments } },

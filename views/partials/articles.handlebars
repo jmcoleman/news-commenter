@@ -21,13 +21,13 @@
                     {{#unless articles}}
                         <p>
                             {{#isTruthy isClearing}}
-                                <a href="/api/articles/scrape" class="alert-link">Scrape Articles</a> to reload with content.
+                                <a href="/api/scrape" class="alert-link">Scrape Articles</a> to reload with content.
                             {{/isTruthy}}
                             {{#isTruthy isScraping}}
                                 Navigate <a href="/" class="alert-link">Home</a> to check out the existing content.
                             {{/isTruthy}}
                             {{#isFalsey isClearing}}{{#isFalsey isScraping}}
-                                No articles are in the collection. <a href="/api/articles/scrape" class="alert-link">Scrape</a> to add content.
+                                No articles are in the collection. <a href="/api/scrape" class="alert-link">Scrape</a> to add content.
                             {{/isFalsey}}{{/isFalsey}}
                         </p>
                     {{/unless}}

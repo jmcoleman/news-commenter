@@ -32,7 +32,7 @@ function handleCommentFormSubmit(e) {
 				}
 
 				// Send the POST request.
-				fetch(`/api/articles/comments/${id}`, {
+				fetch(`/api/articles/${id}/comments`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ function handleArticlesClick(e) {
 		const articleId = element.parentNode.getAttribute('data-article-id')
 
 		// Send the DELETE request.
-		fetch(`/api/articles/comments/${articleId}/${commentId}`, {
+		fetch(`/api/articles/${articleId}/comments/${commentId}`, {
 			method: 'DELETE',
 		}).then(function () {
 			// get the current number of comments

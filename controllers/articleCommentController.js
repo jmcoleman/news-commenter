@@ -4,7 +4,9 @@ const Article = require('../models/Article')
 // save a new comment on an article
 const createComment = async (req, res) => {
 	try {
-		let id = req.params.id ? req.params.id : req.body.id
+		let articleid = req.params.articleid
+			? req.params.articleid
+			: req.body.articleId
 
 		// Create a new comment in the db
 		const newComment = await ArticleComment.create(req.body)
@@ -16,7 +18,7 @@ const createComment = async (req, res) => {
 		// since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
 		if (newComment) {
 			const updatedArticle = await Article.findOneAndUpdate(
-				{ _id: id },
+				{ _id: articleid },
 				{ $push: { comments: newComment._id } },
 				{ new: true }
 			).lean()
@@ -33,8 +35,11 @@ const createComment = async (req, res) => {
 // delete a comment on an article
 const deleteComment = async (req, res) => {
 	try {
-		let articleId = req.params.articleId
-		let id = req.params.id
+		// let articleId = req.params.articleId
+		// let id = req.params.id
+
+		let articleid = req.params.articleid
+		let commentid = req.params.commentid
 
 		// console.log('in deleteComment')
 		// console.log('articleId: ', articleId)
@@ -42,13 +47,13 @@ const deleteComment = async (req, res) => {
 
 		// remove the article comment
 		const commentRemoved = await ArticleComment.findByIdAndRemove({
-			_id: id,
+			_id: commentid,
 		}).lean()
 
 		// create object to send back a message and the id of the document that was removed
 		const response = {
 			message: 'Comment successfully deleted',
-			id: id,
+			id: commentid,
 			articleId: JSON.stringify(commentRemoved.articleId),
 			userName: commentRemoved.userName,
 			comment: commentRemoved.comment,
@@ -56,8 +61,8 @@ const deleteComment = async (req, res) => {
 
 		// remove reference from comment array in article
 		await Article.findByIdAndUpdate(
-			{ _id: articleId },
-			{ $pull: { comments: { $in: [id] } } }
+			{ _id: articleid },
+			{ $pull: { comments: { $in: [commentid] } } }
 		).exec()
 
 		return res.status(204).json(response)
